@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -18,10 +19,13 @@ import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
 import com.example.momentum_app.view.signinpage.SignInPage
 import com.example.momentum_app.view.signuppage.SignUpPage
 import com.example.momentum_app.view.splashscreen.SplashScreen
+import com.example.momentum_app.viewmodel.SignUpViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val signUpViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
         enableEdgeToEdge()
         setContent {
             AppTheme {
@@ -33,22 +37,41 @@ class MainActivity : ComponentActivity() {
 
                     NavHost(navController = navController, startDestination = "SplashScreen") {
                         composable("SplashScreen") {
-                            SplashScreen(navController = navController, context = this@MainActivity)
+                            SplashScreen(
+                                navController = navController,
+                                context = this@MainActivity
+                            )
                         }
                         composable("OnboardingGetStarted") {
-                            OnboardingGetStarted(navController = navController, context = this@MainActivity)
+                            OnboardingGetStarted(
+                                navController = navController,
+                                context = this@MainActivity
+                            )
                         }
                         composable("OnboardingScreen") {
-                            OnboardingScreen(navController = navController, context = this@MainActivity)
+                            OnboardingScreen(
+                                navController = navController,
+                                context = this@MainActivity
+                            )
                         }
                         composable("SignUpPage"){
-                            SignUpPage(navController = navController, context = this@MainActivity)
+                            SignUpPage(
+                                navController = navController,
+                                context = this@MainActivity,
+                                viewModel = signUpViewModel
+                            )
                         }
                         composable("SignInPage"){
-                            SignInPage(navController = navController, context = this@MainActivity)
+                            SignInPage(
+                                navController = navController,
+                                context = this@MainActivity
+                            )
                         }
                         composable("MainScreen"){
-                            MainScreen(navController = navController, context = this@MainActivity)
+                            MainScreen(
+                                navController = navController,
+                                context = this@MainActivity
+                            )
                         }
                     }
                 }
