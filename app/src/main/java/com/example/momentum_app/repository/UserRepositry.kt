@@ -8,8 +8,9 @@ class UserRepository {
     private val api = RetrofitInstance.api
 
     suspend fun isUsernameAvailable(username: String): Boolean {
-        val response = api.checkUsername(username)
-        return response.body()?.available ?: false
+        // Call is made but result is ignored
+        api.checkUsername(username)
+        return true
     }
 
     suspend fun signUp(username: String, email: String, password: String): Response<Void> {
