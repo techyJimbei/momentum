@@ -1,5 +1,7 @@
 package com.example.momentum_app.view.signinpage
 
+import SignUpViewModel
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +16,10 @@ import androidx.compose.material.Text
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,7 +32,15 @@ import com.example.momentum_app.MainActivity
 import com.example.momentum_app.R
 
 @Composable
-fun SignInPage(navController: NavHostController, context: MainActivity) {
+fun SignInPage(navController: NavHostController, viewModel: SignUpViewModel, context: MainActivity) {
+
+    var username by remember {
+        mutableStateOf("")
+    }
+
+    var password by remember {
+        mutableStateOf("")
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -37,13 +51,13 @@ fun SignInPage(navController: NavHostController, context: MainActivity) {
 
         Spacer(Modifier.size(16.dp))
 
-        OutlinedTextField(value = "", onValueChange = {}, label = {
+        OutlinedTextField(value = "username", onValueChange = {username = it}, label = {
             Text(text = "Enter Username")
         }, shape = RoundedCornerShape(16.dp))
 
         Spacer(Modifier.size(16.dp))
 
-        OutlinedTextField(value = "", onValueChange = {}, label = {
+        OutlinedTextField(value = "password", onValueChange = {password = it}, label = {
             Text(text = "Enter Password")
         }, shape = RoundedCornerShape(16.dp))
 
@@ -51,7 +65,17 @@ fun SignInPage(navController: NavHostController, context: MainActivity) {
 
         Button(
             onClick ={
-                navController.navigate("MainScreen")
+                if (username.isBlank() || password.isBlank()) {
+                    Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                } else {
+                    viewModel.loginUser(username, password) { success, message ->
+                        if (success) {
+                            navController.navigate("MainScreen")
+                        } else {
+                            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             },
             modifier = Modifier
                 .size(200.dp, 48.dp),

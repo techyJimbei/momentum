@@ -6,6 +6,7 @@ data class UserRequest(
     val password: String
 )
 
-data class UsernameCheckResponse(
-    val available: Boolean
+data class UserLogin(
+    val username: String,
+    val password: String
 )

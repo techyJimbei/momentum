@@ -9,13 +9,10 @@ class SignUpViewModel : ViewModel() {
     fun registerUser(username: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
-                val isAvailable = repository.isUsernameAvailable(username)
-                if (!isAvailable) {
-                    onResult(false, "Username already taken")
-                    return@launch
-                }
 
                 val response = repository.signUp(username, email, password)
+
+
                 if (response.isSuccessful) {
                     onResult(true, "User registered successfully")
                 } else {
@@ -24,6 +21,18 @@ class SignUpViewModel : ViewModel() {
 
             } catch (e: Exception) {
                 onResult(false, "Error: ${e.message}")
+            }
+        }
+    }
+
+    fun loginUser(username: String, password: String, onResult: (Boolean, String) -> Unit){
+        viewModelScope.launch {
+            val login = repository.signIn(username, password)
+
+            if (login.isSuccessful) {
+                onResult(true, "User logged in successfully")
+            } else {
+                onResult(false, "Failed to login user")
             }
         }
     }
