@@ -5,5 +5,13 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun TaskListScreen(modifier: Modifier = Modifier){
+    
+    TaskListComponents(
+        modifier = modifier,
+        header = { TaskListHeader() },
+        greeting = TODO(),
+        notes = TODO(),
+    )
+    
 
 }
