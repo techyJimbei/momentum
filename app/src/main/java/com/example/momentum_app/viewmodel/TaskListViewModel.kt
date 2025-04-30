@@ -9,24 +9,22 @@ import kotlinx.coroutines.launch
 
 class TaskListViewModel: ViewModel() {
     private val repository = TaskRepository()
+    val tasks = mutableListOf<Task>()
 
-    fun addTask(title: String, description: String, onResult: (Boolean, String) -> Unit){
+    fun addTask(title: String, description: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
-
                 val response = repository.insertTask(title, description)
-
-                if (response.isSuccessful) {
-                    onResult(true, "Task Added: $title")
+                if (response.isSuccessful && response.body() != null) {
+                    tasks.add(response.body()!!)
+                    onResult(true, "Task Added")
                 } else {
                     onResult(false, "Failed to add task")
                 }
-
             } catch (e: Exception) {
                 onResult(false, "Error: ${e.message}")
             }
         }
-
     }
 
     fun showAllTask(onResult: (Boolean, List<Task>?) -> Unit){
@@ -36,13 +34,13 @@ class TaskListViewModel: ViewModel() {
                 val response = repository.getAllTasks()
 
                 if (response.isSuccessful) {
-                    onResult(true, response.body())
+                    onResult(true, response.body() ?: emptyList())
                 } else {
-                    onResult(false, null)
+                    onResult(false, emptyList())
                 }
 
             } catch (e: Exception) {
-                onResult(false, null)
+                onResult(false, emptyList())
             }
         }
 
@@ -51,17 +49,15 @@ class TaskListViewModel: ViewModel() {
     fun removeTask(id: String, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
             try {
-
                 val response = repository.deleteTask(id)
-
-                if (response.isSuccessful) {
-                    onResult(true, "Task deleted")
-                } else {
-                    onResult(false, "Task not deleted")
+                if (response.isSuccessful){
+                    onResult(true, "Deleted")
                 }
-
+                else{
+                    onResult(false, "Failed to delete")
+                }
             } catch (e: Exception) {
-                onResult(false, "Error: ${e.message}")
+                onResult(false, e.message ?: "Error")
             }
         }
 
