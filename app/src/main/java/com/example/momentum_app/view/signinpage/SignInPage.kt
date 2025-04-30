@@ -51,13 +51,13 @@ fun SignInPage(navController: NavHostController, viewModel: SignUpViewModel, con
 
         Spacer(Modifier.size(16.dp))
 
-        OutlinedTextField(value = "username", onValueChange = {username = it}, label = {
+        OutlinedTextField(value = username, onValueChange = {username = it}, label = {
             Text(text = "Enter Username")
         }, shape = RoundedCornerShape(16.dp))
 
         Spacer(Modifier.size(16.dp))
 
-        OutlinedTextField(value = "password", onValueChange = {password = it}, label = {
+        OutlinedTextField(value = password, onValueChange = {password = it}, label = {
             Text(text = "Enter Password")
         }, shape = RoundedCornerShape(16.dp))
 

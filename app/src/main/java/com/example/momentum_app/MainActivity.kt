@@ -64,7 +64,8 @@ class MainActivity : ComponentActivity() {
                         composable("SignInPage"){
                             SignInPage(
                                 navController = navController,
-                                context = this@MainActivity
+                                context = this@MainActivity,
+                                viewModel = signUpViewModel
                             )
                         }
                         composable("MainScreen"){
