@@ -14,7 +14,7 @@ import retrofit2.http.Path
 
 interface UserApi {
 
-    @POST("/api/login")
+    @POST("/api/auth/login")
     suspend fun loginUser(@Body user: UserLogin): Response<Void>
 
     @POST("/api/save")
