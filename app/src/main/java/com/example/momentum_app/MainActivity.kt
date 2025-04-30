@@ -19,6 +19,8 @@ import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
 import com.example.momentum_app.view.signinpage.SignInPage
 import com.example.momentum_app.view.signuppage.SignUpPage
 import com.example.momentum_app.view.splashscreen.SplashScreen
+import com.example.momentum_app.view.tasklistscreen.TaskListScreen
+import com.example.momentum_app.viewmodel.TaskListViewModel
 
 
 class MainActivity : ComponentActivity() {
@@ -26,6 +28,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val signUpViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
+        val taskListViewModel = ViewModelProvider(this)[TaskListViewModel::class.java]
+
         enableEdgeToEdge()
         setContent {
             AppTheme {
@@ -71,6 +75,12 @@ class MainActivity : ComponentActivity() {
                         composable("MainScreen"){
                             MainScreen(
                                 navController = navController,
+                                context = this@MainActivity
+                            )
+                        }
+                        composable("TaskListScreen"){
+                            TaskListScreen(
+                                viewModel = taskListViewModel,
                                 context = this@MainActivity
                             )
                         }

@@ -90,8 +90,10 @@ fun SignUpPage(navController: NavHostController, viewModel: SignUpViewModel, con
                 } else if (password != re_password) {
                     Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.registerUser(username, email, password) { success, message ->
-                        if (success) {
+                    viewModel.registerUser(
+                        username, email, password
+                    ) { success, message ->
+                        if (success as Boolean) {
                             navController.navigate("MainScreen")
                         } else {
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

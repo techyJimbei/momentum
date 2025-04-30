@@ -1,8 +1,7 @@
 package com.example.momentum_app.ui.theme
-import android.media.tv.TvContract.Channels.Logo
-import androidx.compose.ui.graphics.Color
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.graphics.Color
 
 
 val Blue = Color(0xFFA0CAFD)

@@ -1,5 +1,6 @@
 package com.example.momentum_app.view.mainscreen
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import com.example.momentum_app.view.profilescreen.ProfileScreen
 import com.example.momentum_app.view.progressscreen.ProgressScreen
 import com.example.momentum_app.view.rewardsscreen.RewardsScreen
 import com.example.momentum_app.view.tasklistscreen.TaskListScreen
+import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun MainScreen(
@@ -66,7 +68,10 @@ fun MainScreen(
         when (selectedIndex) {
             0 -> Home(modifier = modifier.padding(innerPadding), navController = navController, context = context)
             1 -> RewardsScreen(modifier = modifier.padding(innerPadding))
-            2 -> TaskListScreen(modifier = modifier.padding(innerPadding))
+            2 -> TaskListScreen(
+                viewModel = TaskListViewModel(),
+                context = context
+            )
             3 -> ProgressScreen(modifier = modifier.padding(innerPadding))
             4 -> ProfileScreen(modifier = modifier.padding(innerPadding))
         }

@@ -12,7 +12,8 @@ class TaskRepository{
             id = System.currentTimeMillis().toString(),
             title = title,
             description = description,
-            createdAt = System.currentTimeMillis()
+            createdAt = System.currentTimeMillis(),
+            isCompleted = false
         )
         return api.addTask(taskData)
     }

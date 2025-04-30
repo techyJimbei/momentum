@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 class SignUpViewModel : ViewModel() {
     private val repository = UserRepository()
 
-    fun registerUser(username: String, email: String, password: String, onResult: (Boolean, String) -> Unit, context: Context) {
+    fun registerUser(username: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
 
@@ -17,7 +17,6 @@ class SignUpViewModel : ViewModel() {
 
                 if (response.isSuccessful) {
                     onResult(true, "User registered successfully")
-                    saveUsername(context, username)
                 } else {
                     onResult(false, "Failed to register user")
                 }
@@ -38,13 +37,5 @@ class SignUpViewModel : ViewModel() {
                 onResult(false, "Failed to login user")
             }
         }
-    }
-}
-
-private fun saveUsername(context: Context, username: String) {
-    val sharedPref = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-    with(sharedPref.edit()) {
-        putString("username", username)
-        apply()
     }
 }
