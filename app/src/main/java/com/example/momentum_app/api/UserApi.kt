@@ -2,6 +2,7 @@ package com.example.momentum_app.api
 
 
 import com.example.momentum_app.model.Task
+import com.example.momentum_app.model.TokenAccept
 import com.example.momentum_app.model.UserLogin
 import com.example.momentum_app.model.UserRequest
 import retrofit2.Response
@@ -14,8 +15,11 @@ import retrofit2.http.Path
 
 interface UserApi {
 
-    @POST("/api/auth/login")
-    suspend fun loginUser(@Body user: UserLogin): Response<Void>
+    interface ApiService {
+        @POST("/api/auth/login")
+        suspend fun loginUser(@Body user: UserLogin): Response<TokenAccept>
+    }
+
 
     @POST("/api/save")
     suspend fun registerUser(@Body user: UserRequest): Response<Void>

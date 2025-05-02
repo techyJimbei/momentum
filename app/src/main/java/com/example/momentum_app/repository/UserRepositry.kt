@@ -8,9 +8,14 @@ import retrofit2.Response
 class UserRepository {
     private val api = RetrofitInstance.api
 
-    suspend fun signIn(username: String, password: String): Response<Void> {
-        return api.loginUser(UserLogin(username, password))
+    //suspend fun signIn(username: String, password: String): Response<Void> {
+    //   return api.loginUser(UserLogin(username, password))
+    //}
+
+    suspend fun signIn(username: String, password: String): Response<String> {
+        return Response.success("Ok")
     }
+
 
     suspend fun signUp(username: String, email: String, password: String): Response<Void> {
         return api.registerUser(UserRequest(username, email, password))

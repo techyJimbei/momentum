@@ -9,7 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.viewmodel.TaskListViewModel
 
@@ -34,10 +37,12 @@ fun TaskListScreen(
     }
 
     Scaffold(
+        containerColor = Color.White,
         floatingActionButton = {
-            TaskListAddButton {
-                showAddDialog = true
-            }
+            TaskListAddButton(
+                onClick = { showAddDialog = true },
+                modifier =  Modifier.padding(bottom = 90.dp, end = 10.dp)
+            )
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
@@ -49,9 +54,12 @@ fun TaskListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(32.dp),
-                    contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center
                 ) {
-                    Text("No tasks yet", style = MaterialTheme.typography.bodyLarge)
+                    Text("No tasks yet",
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.W300,
+                        modifier = Modifier.padding(bottom = 100.dp))
                 }
             } else {
                 LazyColumn {

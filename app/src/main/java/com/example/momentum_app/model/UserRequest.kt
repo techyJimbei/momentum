@@ -10,3 +10,7 @@ data class UserLogin(
     val username: String,
     val password: String
 )
+
+data class TokenAccept(
+    val token: String
+)
