@@ -9,7 +9,6 @@ class TaskRepository{
 
     suspend fun insertTask(title: String, description: String): Response<Task> {
         val taskData = Task(
-            id = System.currentTimeMillis().toString(),
             title = title,
             description = description,
             createdAt = System.currentTimeMillis(),
@@ -23,11 +22,11 @@ class TaskRepository{
         return api.showAllTasks()
     }
 
-    suspend fun deleteTask(id: String): Response<Void> {
+    suspend fun deleteTask(id: Int): Response<Void> {
         return api.removeTask(id)
     }
 
-    suspend fun updateTask(id: String, title: String, description: String): Response<Task> {
+    suspend fun updateTask(id: Int, title: String, description: String): Response<Task> {
         val updatedTask = Task(
             id = id,
             title = title,

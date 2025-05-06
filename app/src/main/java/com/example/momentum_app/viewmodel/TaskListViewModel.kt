@@ -46,7 +46,7 @@ class TaskListViewModel: ViewModel() {
 
     }
 
-    fun removeTask(id: String, onResult: (Boolean, String) -> Unit){
+    fun removeTask(id: Int, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
             try {
                 val response = repository.deleteTask(id)
@@ -63,7 +63,7 @@ class TaskListViewModel: ViewModel() {
 
     }
 
-    fun editTask(id: String, title: String, description: String, onResult: (Boolean, String) -> Unit){
+    fun editTask(id: Int, title: String, description: String, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
             try {
 

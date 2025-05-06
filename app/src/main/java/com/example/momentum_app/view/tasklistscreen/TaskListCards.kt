@@ -10,6 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.momentum_app.model.Task
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun TaskCard(
@@ -45,6 +47,13 @@ fun TaskCard(
                 }
             }
 
+            Text(
+                text = "Created: ${formatTimestamp(task.createdAt)}",
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                modifier = Modifier.padding(top = 4.dp)
+            )
+
             IconButton(onClick = { onEdit(task) }) {
                 Icon(Icons.Default.Edit, contentDescription = "Edit")
             }
@@ -54,4 +63,9 @@ fun TaskCard(
             }
         }
     }
+}
+
+fun formatTimestamp(timestamp: Long): String {
+    val sdf = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
+    return sdf.format(Date(timestamp))
 }

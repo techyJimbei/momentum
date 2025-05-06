@@ -41,7 +41,7 @@ fun TaskListScreen(
         floatingActionButton = {
             TaskListAddButton(
                 onClick = { showAddDialog = true },
-                modifier =  Modifier.padding(bottom = 90.dp, end = 10.dp)
+                modifier = Modifier.padding(bottom = 90.dp, end = 10.dp)
             )
         }
     ) { padding ->
@@ -54,12 +54,14 @@ fun TaskListScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(32.dp),
-                contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text("No tasks yet",
+                    Text(
+                        "No tasks yet",
                         fontSize = 28.sp,
                         fontWeight = FontWeight.W300,
-                        modifier = Modifier.padding(bottom = 100.dp))
+                        modifier = Modifier.padding(bottom = 100.dp)
+                    )
                 }
             } else {
                 LazyColumn {
@@ -67,12 +69,14 @@ fun TaskListScreen(
                         TaskCard(
                             task = task,
                             onDelete = {
-                                viewModel.removeTask(task.id) { success, msg ->
-                                    if (success) {
-                                        taskList = taskList.filter { it.id != task.id }
-                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                task.id?.let { id ->
+                                    viewModel.removeTask(id) { success, msg ->
+                                        if (success) {
+                                            taskList = taskList.filter { it.id != id }
+                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                        }
                                     }
-                                }
+                                } ?: Toast.makeText(context, "Task ID is null", Toast.LENGTH_SHORT).show()
                             },
                             onEdit = {
                                 taskToEdit = it
@@ -113,18 +117,20 @@ fun TaskListScreen(
                         taskToEdit = null
                     },
                     onUpdate = { newTitle, newDesc ->
-                        viewModel.editTask(taskToEdit!!.id, newTitle, newDesc) { success, msg ->
-                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                            if (success) {
-                                viewModel.showAllTask() { _, list ->
-                                    if (list != null) {
-                                        taskList = list
+                        taskToEdit?.id?.let { id ->
+                            viewModel.editTask(id, newTitle, newDesc) { success, msg ->
+                                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                if (success) {
+                                    viewModel.showAllTask() { _, list ->
+                                        if (list != null) {
+                                            taskList = list
+                                        }
+                                        showEditDialog = false
+                                        taskToEdit = null
                                     }
-                                    showEditDialog = false
-                                    taskToEdit = null
                                 }
                             }
-                        }
+                        } ?: Toast.makeText(context, "Cannot edit: Task ID is null", Toast.LENGTH_SHORT).show()
                     }
                 )
             }

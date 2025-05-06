@@ -25,13 +25,13 @@ interface UserApi {
     suspend fun registerUser(@Body user: UserRequest): Response<Void>
 
     @POST("/api/task")
-    suspend fun addTask(@Body task: Task): Response<Task>
+    suspend fun addTask(@Body task: Task, @Body username: UserRequest): Response<Task>
 
     @DELETE("/api/task/{id}")
-    suspend fun removeTask(@Path("id") id: String): Response<Void>
+    suspend fun removeTask(@Path("id") id: Int): Response<Void>
 
     @PUT("/api/task/{id}")
-    suspend fun editTask(@Path("id") id: String ,@Body task: Task): Response<Task>
+    suspend fun editTask(@Path("id") id: Int ,@Body task: Task): Response<Task>
 
     @GET("/api/tasks")
     suspend fun showAllTasks(): Response<List<Task>>
