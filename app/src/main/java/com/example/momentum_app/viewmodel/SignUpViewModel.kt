@@ -27,9 +27,9 @@ class SignUpViewModel : ViewModel() {
         }
     }
 
-    fun loginUser(context: Context,username: String, password: String, onResult: (Boolean, String) -> Unit){
+
+    fun loginUser(username: String,context: Context, password: String, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
-            val username = getUsername(context)
             val login = repository.signIn(username, password)
             onResult(true, "User logged in successfully")
             saveUsername(context, username)
@@ -44,6 +44,7 @@ class SignUpViewModel : ViewModel() {
         }
     }
 }
+
 fun saveUsername(context: Context, username: String) {
     val sharedPref = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
     with(sharedPref.edit()) {
@@ -52,7 +53,6 @@ fun saveUsername(context: Context, username: String) {
     }
 }
 
-private fun getUsername(context: Context): String {
-    val sharedPref = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-    return sharedPref.getString("username", "User") ?: "User"
-}
+
+
+

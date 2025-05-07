@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="Blue">#FFA0CAFD</color>
+    <color name="Sky_Blue">#FF84A59D</color>
+    <color name="Navy_Blue">#FF184974</color>
+    <color name="Powder_Blue">#FFD1E4FF</color>
+    <color name="Grey">#FFD8DAE0</color>
+    <color name="Dark_Grey">#FF2E3135</color>
+    <color name="Dark">#FF003257</color>
+    <color name="splashscreen_bg">#89C4FF</color>
+</resources>

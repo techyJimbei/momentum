@@ -29,7 +29,7 @@ fun TaskListScreen(
     var taskList by remember { mutableStateOf<List<Task>>(emptyList()) }
 
     LaunchedEffect(Unit) {
-        viewModel.showAllTask() { success, list ->
+        viewModel.showAllTask { success, list ->
             if (success && list != null) {
                 taskList = list
             }
@@ -95,13 +95,14 @@ fun TaskListScreen(
                 TaskListAddTaskDialog(
                     onDismiss = { showAddDialog = false },
                     onAddTask = { title, desc ->
-                        viewModel.addTask(title, desc) { success, message ->
+                        viewModel.addTask(context, title, desc) { success, message ->
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
                             if (success) {
-                                viewModel.showAllTask() { _, list ->
+                                viewModel.showAllTask { _, list ->
                                     if (list != null) {
                                         taskList = list
                                     }
+                                    showAddDialog = false
                                 }
                             }
                         }
@@ -127,6 +128,7 @@ fun TaskListScreen(
                                         }
                                         showEditDialog = false
                                         taskToEdit = null
+
                                     }
                                 }
                             }

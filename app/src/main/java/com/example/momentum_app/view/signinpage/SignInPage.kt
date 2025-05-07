@@ -68,7 +68,11 @@ fun SignInPage(navController: NavHostController, viewModel: SignUpViewModel, con
                 if (username.isBlank() || password.isBlank()) {
                     Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.loginUser(username, password) { success, message ->
+                    viewModel.loginUser(
+                        username = username,
+                        password = password,
+                        context = context
+                    ) { success, message ->
                         if (success) {
                             navController.navigate("MainScreen")
                         } else {
