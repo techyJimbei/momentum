@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class TaskListViewModel: ViewModel() {
     private val repository = TaskRepository()
-    val tasks = mutableListOf<Task>()
+    private val tasks = mutableListOf<Task>()
 
     fun addTask(title: String, description: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
@@ -67,7 +67,7 @@ class TaskListViewModel: ViewModel() {
         viewModelScope.launch {
             try {
 
-                val response = repository.updateTask(id ,  title, description)
+                val response = repository.updateTask(id,  title, description)
 
                 if (response.isSuccessful) {
                     onResult(true, "Task Updated: $title")
