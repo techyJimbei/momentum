@@ -119,7 +119,7 @@ fun TaskListScreen(
                     },
                     onUpdate = { newTitle, newDesc ->
                         taskToEdit?.id?.let { id ->
-                            viewModel.editTask(id, newTitle, newDesc) { success, msg ->
+                            viewModel.editTask(context, id, newTitle, newDesc) { success, msg ->
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                 if (success) {
                                     viewModel.showAllTask() { _, list ->
