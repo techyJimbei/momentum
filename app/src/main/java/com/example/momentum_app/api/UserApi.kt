@@ -1,6 +1,7 @@
 package com.example.momentum_app.api
 
 
+import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.model.TokenAccept
 import com.example.momentum_app.model.UserLogin
@@ -37,4 +38,11 @@ interface UserApi {
 
     @GET("/api/tasks")
     suspend fun showAllTasks(): Response<List<Task>>
+
+    @POST("/api/post")
+    suspend fun sharePost(@Body post: Post): Response<Void>
+
+    @GET("/api/posts")
+    suspend fun getAllPosts(): Response<List<Post>>
+
 }

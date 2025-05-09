@@ -71,7 +71,8 @@ fun MainScreen(
             2 -> TaskListScreen(
                 viewModel = TaskListViewModel(),
                 context = context,
-                modifier = modifier.padding(innerPadding)
+                modifier = modifier.padding(innerPadding),
+                navController = navController
             )
             3 -> ProgressScreen(modifier = modifier.padding(innerPadding))
             4 -> ProfileScreen(modifier = modifier.padding(innerPadding))

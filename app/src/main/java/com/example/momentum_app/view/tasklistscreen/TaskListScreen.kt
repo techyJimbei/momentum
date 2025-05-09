@@ -12,19 +12,24 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun TaskListScreen(
-    viewModel: TaskListViewModel, modifier: Modifier,
-    context: Context
+    viewModel: TaskListViewModel,
+    modifier: Modifier,
+    context: Context,
+    navController: NavHostController
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
     var taskToEdit by remember { mutableStateOf<Task?>(null) }
     var showShareDialog by remember { mutableStateOf(false) }
     var completedTaskTitle by remember { mutableStateOf("") }
+    var completedTaskDesc by remember { mutableStateOf("") }
 
     val taskList by viewModel.taskList.collectAsState()
 
@@ -130,7 +135,7 @@ fun TaskListScreen(
                     onDismiss = { showShareDialog = false },
                     onSharePost = {
                         showShareDialog = false
-                        Toast.makeText(context, "Shared as Post!", Toast.LENGTH_SHORT).show()
+                        navController.navigate("SharePostScreen/${completedTaskTitle}/${completedTaskDesc}")
                     },
                     onShareStory = {
                         showShareDialog = false
