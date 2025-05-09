@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.momentum_app.model.Task
@@ -26,15 +25,9 @@ fun TaskListScreen(
     var taskToEdit by remember { mutableStateOf<Task?>(null) }
     var showShareDialog by remember { mutableStateOf(false) }
     var completedTaskTitle by remember { mutableStateOf("") }
-    var taskList by remember { mutableStateOf<List<Task>>(emptyList()) }
 
-    LaunchedEffect(Unit) {
-        viewModel.showAllTask { success, list ->
-            if (success && list != null) {
-                taskList = list
-            }
-        }
-    }
+
+    val taskList by viewModel.taskList.collectAsState()
 
     Scaffold(
         containerColor = Color.White,
@@ -59,7 +52,6 @@ fun TaskListScreen(
                     Text(
                         "No tasks yet",
                         fontSize = 28.sp,
-                        fontWeight = FontWeight.W300,
                         modifier = Modifier.padding(bottom = 100.dp)
                     )
                 }
@@ -71,12 +63,9 @@ fun TaskListScreen(
                             onDelete = {
                                 task.id?.let { id ->
                                     viewModel.removeTask(id) { success, msg ->
-                                        if (success) {
-                                            taskList = taskList.filter { it.id != id }
-                                            Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
-                                        }
+                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                     }
-                                } ?: Toast.makeText(context, "Task ID is null", Toast.LENGTH_SHORT).show()
+                                }
                             },
                             onEdit = {
                                 taskToEdit = it
@@ -97,14 +86,7 @@ fun TaskListScreen(
                     onAddTask = { title, desc ->
                         viewModel.addTask(context, title, desc) { success, message ->
                             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
-                            if (success) {
-                                viewModel.showAllTask { _, list ->
-                                    if (list != null) {
-                                        taskList = list
-                                    }
-                                    showAddDialog = false
-                                }
-                            }
+                            if (success) showAddDialog = false
                         }
                     }
                 )
@@ -122,17 +104,11 @@ fun TaskListScreen(
                             viewModel.editTask(context, id, newTitle, newDesc) { success, msg ->
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                 if (success) {
-                                    viewModel.showAllTask() { _, list ->
-                                        if (list != null) {
-                                            taskList = list
-                                        }
-                                        showEditDialog = false
-                                        taskToEdit = null
-
-                                    }
+                                    showEditDialog = false
+                                    taskToEdit = null
                                 }
                             }
-                        } ?: Toast.makeText(context, "Cannot edit: Task ID is null", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 )
             }
