@@ -1,6 +1,7 @@
 package com.example.momentum_app.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.momentum_app.model.Task
@@ -33,17 +34,29 @@ class TaskListViewModel : ViewModel() {
         }
     }
 
+
     fun addTask(context: Context, title: String, description: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
                 val response = repository.insertTask(context, title, description)
-                if (response.isSuccessful && response.body() != null) {
+
+                // Log the response details to help debug
+                Log.d("TaskListViewModel", "Response code: ${response.code()}")
+                Log.d("TaskListViewModel", "Response message: ${response.message()}")
+                Log.d("TaskListViewModel", "Response body: ${response.body()}")
+
+                // Check only for successful status code (usually 200-299)
+                if (response.isSuccessful) {
+                    // Indicate success even if body is null
                     fetchTasks()
                     onResult(true, "Task Added")
                 } else {
-                    onResult(false, "Failed to add task")
+                    // Log more details about error cases
+                    Log.e("TaskListViewModel", "Error adding task: ${response.errorBody()?.string()}")
+                    onResult(false, "Failed to add task: ${response.message()}")
                 }
             } catch (e: Exception) {
+                Log.e("TaskListViewModel", "Exception adding task", e)
                 onResult(false, "Error: ${e.message}")
             }
         }

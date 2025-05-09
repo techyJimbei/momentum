@@ -13,7 +13,7 @@ class TaskRepository {
         return sharedPref.getString("username", "User") ?: "User"
     }
 
-    suspend fun insertTask(context: Context, title: String, description: String): Response<Task> {
+    suspend fun insertTask(context: Context, title: String, description: String): Response<Void> {
         val taskData = Task(
             title = title,
             description = description,

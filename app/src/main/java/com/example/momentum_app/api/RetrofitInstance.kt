@@ -1,17 +1,22 @@
 package com.example.momentum_app.api
 
 import android.content.Context
-//import com.example.momentum_app.jwttoken.AuthInterceptor
-//import com.example.momentum_app.jwttoken.TokenManager
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
+
+    // Create Gson instance with lenient mode
+    private val gson = GsonBuilder()
+        .setLenient()
+        .create()
+
     private val retrofit by lazy {
         Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8080")
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson)) // use lenient gson here
             .build()
     }
 
@@ -20,16 +25,14 @@ object RetrofitInstance {
     }
 
     fun provideRetrofit(context: Context): Retrofit {
-//        val tokenManager = TokenManager(context)
         val client = OkHttpClient.Builder()
-//            .addInterceptor(AuthInterceptor(tokenManager))
+            // .addInterceptor(AuthInterceptor(tokenManager)) // Uncomment if needed
             .build()
 
         return Retrofit.Builder()
             .baseUrl("http://10.0.2.2:8080")
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson)) // use lenient gson here too
             .build()
     }
 }
-
