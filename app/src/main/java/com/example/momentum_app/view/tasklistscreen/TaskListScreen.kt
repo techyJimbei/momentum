@@ -17,7 +17,7 @@ import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun TaskListScreen(
-    viewModel: TaskListViewModel,
+    viewModel: TaskListViewModel, modifier: Modifier,
     context: Context
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
@@ -25,7 +25,6 @@ fun TaskListScreen(
     var taskToEdit by remember { mutableStateOf<Task?>(null) }
     var showShareDialog by remember { mutableStateOf(false) }
     var completedTaskTitle by remember { mutableStateOf("") }
-
 
     val taskList by viewModel.taskList.collectAsState()
 
@@ -38,7 +37,7 @@ fun TaskListScreen(
             )
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
+        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
             TaskListHeader()
             TaskListGreeting(context = context)
 
@@ -61,15 +60,22 @@ fun TaskListScreen(
                         TaskCard(
                             task = task,
                             onDelete = {
-                                task.id?.let { id ->
+                                val id = task.id
+                                if (id != null) {
                                     viewModel.removeTask(id) { success, msg ->
                                         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                     }
+                                } else {
+                                    Toast.makeText(context, "Cannot delete task: ID is null", Toast.LENGTH_SHORT).show()
                                 }
                             },
                             onEdit = {
-                                taskToEdit = it
-                                showEditDialog = true
+                                if (it.id != null) {
+                                    taskToEdit = it
+                                    showEditDialog = true
+                                } else {
+                                    Toast.makeText(context, "Cannot edit task: ID is null", Toast.LENGTH_SHORT).show()
+                                }
                             },
                             onComplete = {
                                 completedTaskTitle = task.title
@@ -93,15 +99,20 @@ fun TaskListScreen(
             }
 
             if (showEditDialog && taskToEdit != null) {
-                TaskListEditDialog(
-                    task = taskToEdit!!,
-                    onDismiss = {
-                        showEditDialog = false
-                        taskToEdit = null
-                    },
-                    onUpdate = { newTitle, newDesc ->
-                        taskToEdit?.id?.let { id ->
-                            viewModel.editTask(context, id, newTitle, newDesc) { success, msg ->
+                val safeTask = taskToEdit!!
+                if (safeTask.id == null) {
+                    Toast.makeText(context, "Error: Task ID is null", Toast.LENGTH_SHORT).show()
+                    showEditDialog = false
+                    taskToEdit = null
+                } else {
+                    TaskListEditDialog(
+                        task = safeTask,
+                        onDismiss = {
+                            showEditDialog = false
+                            taskToEdit = null
+                        },
+                        onUpdate = { newTitle, newDesc ->
+                            viewModel.editTask(context, safeTask.id, newTitle, newDesc) { success, msg ->
                                 Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                                 if (success) {
                                     showEditDialog = false
@@ -109,8 +120,8 @@ fun TaskListScreen(
                                 }
                             }
                         }
-                    }
-                )
+                    )
+                }
             }
 
             if (showShareDialog) {

@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+
 class TaskListViewModel : ViewModel() {
     private val repository = TaskRepository()
 
@@ -78,13 +79,13 @@ class TaskListViewModel : ViewModel() {
         }
     }
 
-    fun editTask(context: Context, id: Int, title: String, description: String, onResult: (Boolean, String) -> Unit) {
+    fun editTask(context: Context ,id: Int, title: String, description: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
-                val response = repository.updateTask(context, id, title, description)
+                val response = repository.updateTask(context , id, title, description)
                 if (response.isSuccessful) {
                     fetchTasks()
-                    onResult(true, "Task Updated: $title")
+                    onResult(true, "Task updated successfully")
                 } else {
                     onResult(false, "Failed to update task")
                 }

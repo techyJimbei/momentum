@@ -70,7 +70,8 @@ fun MainScreen(
             1 -> RewardsScreen(modifier = modifier.padding(innerPadding))
             2 -> TaskListScreen(
                 viewModel = TaskListViewModel(),
-                context = context
+                context = context,
+                modifier = modifier.padding(innerPadding)
             )
             3 -> ProgressScreen(modifier = modifier.padding(innerPadding))
             4 -> ProfileScreen(modifier = modifier.padding(innerPadding))

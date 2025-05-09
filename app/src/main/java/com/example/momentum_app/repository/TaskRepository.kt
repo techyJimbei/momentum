@@ -13,7 +13,7 @@ class TaskRepository {
         return sharedPref.getString("username", "User") ?: "User"
     }
 
-    suspend fun insertTask(context: Context, title: String, description: String): Response<Void> {
+    suspend fun insertTask(context: Context, title: String, description: String): Response<Task> {
         val taskData = Task(
             title = title,
             description = description,
@@ -37,10 +37,10 @@ class TaskRepository {
             id = id,
             title = title,
             description = description,
-            createdAt = System.currentTimeMillis(),
-            isCompleted = false,
+            createdAt = System.currentTimeMillis(),  // You can send existing one too
+            isCompleted = false,  // or existing value
             username = getUsername(context)
         )
-        return api.editTask(id, updatedTask)
+        return api.editTask(id,updatedTask)
     }
 }

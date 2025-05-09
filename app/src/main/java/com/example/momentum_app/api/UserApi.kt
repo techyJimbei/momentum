@@ -9,9 +9,11 @@ import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import java.util.Objects
 
 interface UserApi {
 
@@ -25,7 +27,7 @@ interface UserApi {
     suspend fun registerUser(@Body user: UserRequest): Response<Void>
 
     @POST("/api/task")
-    suspend fun addTask(@Body task: Task): Response<Void>
+    suspend fun addTask(@Body task: Task): Response<Task>
 
     @DELETE("/api/task/{id}")
     suspend fun removeTask(@Path("id") id: Int): Response<Void>

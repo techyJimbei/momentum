@@ -81,7 +81,8 @@ class MainActivity : ComponentActivity() {
                         composable("TaskListScreen"){
                             TaskListScreen(
                                 viewModel = taskListViewModel,
-                                context = this@MainActivity
+                                context = this@MainActivity,
+                                modifier = Modifier
                             )
                         }
                     }

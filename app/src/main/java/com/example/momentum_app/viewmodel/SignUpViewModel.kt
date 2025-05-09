@@ -33,13 +33,13 @@ class SignUpViewModel : ViewModel() {
             onResult(true, "User logged in successfully")
             saveUsername(context, username)
 
-//            if (login.isSuccessful)
-//            {
-//                onResult(true, "User logged in successfully")
-//            } else
-//            {
-//                onResult(false, "Failed to login user")
-//            }
+            if (login.isSuccessful)
+            {
+                onResult(true, "User logged in successfully")
+            } else
+            {
+                onResult(false, "Failed to login user")
+            }
         }
     }
 }
