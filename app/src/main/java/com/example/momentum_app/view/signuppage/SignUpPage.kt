@@ -1,6 +1,7 @@
 package com.example.momentum_app.view.signuppage
 
 import SignUpViewModel
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -91,7 +92,7 @@ fun SignUpPage(navController: NavHostController, viewModel: SignUpViewModel, con
                     Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
                 } else {
                     viewModel.registerUser(
-                        username, email, password
+                        context, username, email, password
                     ) { success, message ->
                         if (success as Boolean) {
                             navController.navigate("MainScreen")

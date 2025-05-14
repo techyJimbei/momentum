@@ -19,12 +19,14 @@ import java.util.Objects
 interface UserApi {
 
     interface ApiService {
-        @POST("/api/auth/login")
-        suspend fun loginUser(@Body user: UserLogin): Response<TokenAccept>
+
     }
 
 
-    @POST("/api/save")
+    @POST("/api/auth/login")
+    suspend fun loginUser(@Body user: UserLogin): Response<Void>
+
+    @POST("/api/auth/save")
     suspend fun registerUser(@Body user: UserRequest): Response<Void>
 
     @POST("/api/task")

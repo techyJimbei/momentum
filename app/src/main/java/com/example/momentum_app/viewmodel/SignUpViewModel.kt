@@ -8,12 +8,12 @@ import kotlinx.coroutines.launch
 class SignUpViewModel : ViewModel() {
     private val repository = UserRepository()
 
-    fun registerUser(username: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
+    fun registerUser(context: Context,username: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
             try {
 
                 val response = repository.signUp(username, email, password)
-
+                saveUsername(context, username)
 
                 if (response.isSuccessful) {
                     onResult(true, "User registered successfully")
@@ -30,7 +30,6 @@ class SignUpViewModel : ViewModel() {
     fun loginUser(context: Context,username: String, password: String, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
             val login = repository.signIn(username, password)
-            onResult(true, "User logged in successfully")
             saveUsername(context, username)
 
             if (login.isSuccessful)
