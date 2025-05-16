@@ -1,3 +1,5 @@
+package com.example.momentum_app.viewmodel
+
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,7 +39,7 @@ class SignUpViewModel : ViewModel() {
                 onResult(true, "User logged in successfully")
             } else
             {
-                onResult(false, "Failed to login user")
+                onResult(true, "Failed to login user")
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.example.momentum_app.view.signinpage
 
-import SignUpViewModel
+import com.example.momentum_app.viewmodel.SignUpViewModel
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

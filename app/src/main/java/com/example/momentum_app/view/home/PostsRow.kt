@@ -23,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.momentum_app.R
 import com.example.momentum_app.model.PostsData
 import com.example.momentum_app.model.PostsList
+import com.example.momentum_app.model.Task
 import com.example.momentum_app.ui.theme.Dark
 import com.example.momentum_app.ui.theme.Logo
 import com.example.momentum_app.ui.theme.Powder_Blue
@@ -38,7 +40,8 @@ import com.example.momentum_app.ui.theme.Powder_Blue
 @Composable
 fun PostsRow(
     modifier: Modifier = Modifier,
-    data: PostsData
+    data: PostsData,
+    task: Task
 ){
     val pager = rememberPagerState(initialPage = 0){3}
     Column(
@@ -64,6 +67,19 @@ fun PostsRow(
                 fontSize = 20.sp
             )
         }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "${task.title}: ${task.description}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W700,
+            fontStyle = FontStyle.Italic,
+            color = Color.DarkGray
+            )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         PostPicture(modifier = Modifier, pagerState = pager, data = data)
         PostAction(pagerState = pager)
         PostCaption(data = data)
@@ -176,9 +192,9 @@ fun PostCaption(
 
 }
 
-fun LazyListScope.postItemList(){
+fun LazyListScope.postItemList(task: Task){
     items(PostsList, key = {it.id}){
-        PostsRow(data =  it)
+        PostsRow(data =  it, task =  task)
     }
 }
 

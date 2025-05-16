@@ -1,7 +1,7 @@
 package com.example.momentum_app
 
 import AppTheme
-import SignUpViewModel
+import com.example.momentum_app.viewmodel.SignUpViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,7 +15,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.example.momentum_app.model.Task
 import com.example.momentum_app.view.mainscreen.MainScreen
 import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
 import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
@@ -81,7 +80,8 @@ class MainActivity : ComponentActivity() {
                         composable("MainScreen") {
                             MainScreen(
                                 navController = navController,
-                                context = this@MainActivity
+                                context = this@MainActivity,
+                                postViewModel = postViewModel
                             )
                         }
                         composable("TaskListScreen") {
