@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.momentum_app.MainActivity
 import com.example.momentum_app.R
+import com.example.momentum_app.model.Task
 import com.example.momentum_app.view.home.Home
 import com.example.momentum_app.view.profilescreen.ProfileScreen
 import com.example.momentum_app.view.progressscreen.ProgressScreen
@@ -28,6 +29,7 @@ import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun MainScreen(
+//    task: Task,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: MainActivity,
@@ -68,7 +70,7 @@ fun MainScreen(
         }
     ) { innerPadding ->
         when (selectedIndex) {
-            0 -> Home(modifier = modifier.padding(innerPadding), navController = navController, context = context)
+            0 -> Home( modifier = modifier.padding(innerPadding), navController = navController, context = context)
             1 -> RewardsScreen(modifier = modifier.padding(innerPadding))
             2 -> TaskListScreen(
                 viewModel = TaskListViewModel(),

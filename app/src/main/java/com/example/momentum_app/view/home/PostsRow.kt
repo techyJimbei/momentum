@@ -41,7 +41,7 @@ import com.example.momentum_app.ui.theme.Powder_Blue
 fun PostsRow(
     modifier: Modifier = Modifier,
     data: PostsData,
-    task: Task
+//    task: Task
 ){
     val pager = rememberPagerState(initialPage = 0){3}
     Column(
@@ -70,13 +70,13 @@ fun PostsRow(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "${task.title}: ${task.description}",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W700,
-            fontStyle = FontStyle.Italic,
-            color = Color.DarkGray
-            )
+//        Text(
+//            text = "${task.title}: ${task.description}",
+//            fontSize = 16.sp,
+//            fontWeight = FontWeight.W700,
+//            fontStyle = FontStyle.Italic,
+//            color = Color.DarkGray
+//            )
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -192,9 +192,9 @@ fun PostCaption(
 
 }
 
-fun LazyListScope.postItemList(task: Task){
+fun LazyListScope.postItemList(){
     items(PostsList, key = {it.id}){
-        PostsRow(data =  it, task =  task)
+        PostsRow(data =  it)
     }
 }
 
