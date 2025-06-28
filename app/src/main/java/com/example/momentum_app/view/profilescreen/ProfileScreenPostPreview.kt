@@ -1,4 +1,4 @@
-package com.example.momentum_app.view.home
+package com.example.momentum_app.view.profilescreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.sp
 import com.example.momentum_app.R
 import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.PostsData
-import com.example.momentum_app.model.PostsList
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.ui.theme.Dark
 import com.example.momentum_app.ui.theme.Logo
@@ -38,10 +37,34 @@ import com.example.momentum_app.ui.theme.Powder_Blue
 
 
 @Composable
+fun ProfileScreenPostPreview(
+    modifier: Modifier = Modifier,
+    task: Task,
+    posts: List<Post>
+) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+    ) {
+        items(
+            items = posts
+        ) { post ->
+            PostsRow(
+                modifier = Modifier,
+                post = post,
+                task = task
+            )
+        }
+    }
+}
+
+
+@Composable
 fun PostsRow(
     modifier: Modifier = Modifier,
-    data: PostsData,
-//    task: Task
+    post: Post,
+    task: Task
 ){
     val pager = rememberPagerState(initialPage = 0){3}
     Column(
@@ -55,14 +78,14 @@ fun PostsRow(
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(data.pfp),
+                painter = painterResource(R.drawable.dummy_pfp1),
                 contentDescription = null,
                 modifier =  modifier
                     .size(38.dp)
             )
 
             Text(
-                text = data.username,
+                text = post.username,
                 fontWeight = FontWeight.W600,
                 fontSize = 20.sp
             )
@@ -70,19 +93,19 @@ fun PostsRow(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-//        Text(
-//            text = "${task.title}: ${task.description}",
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.W700,
-//            fontStyle = FontStyle.Italic,
-//            color = Color.DarkGray
-//            )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "${task.title}: ${task.description}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.W700,
+            fontStyle = FontStyle.Italic,
+            color = Color.DarkGray
+        )
 
-        PostPicture(modifier = Modifier, pagerState = pager, data = data)
+        Spacer(modifier = Modifier.height(16.dp))
+
+        PostPicture(modifier = Modifier, pagerState = pager, post = post)
         PostAction(pagerState = pager)
-        PostCaption(data = data)
+        PostCaption(post = post)
 
         Spacer(modifier = modifier
             .fillMaxWidth()
@@ -98,16 +121,12 @@ fun PostsRow(
 fun PostPicture(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
-    data: PostsData
+    post: Post
 ){
     HorizontalPager(
         modifier = modifier, state = pagerState
     ) {
-        Image(
-            painter = painterResource(data.post),
-            contentDescription = null,
-            modifier.fillMaxWidth()
-        )
+        PostGridItem(post.image)
     }
 
 }
@@ -168,7 +187,7 @@ fun PostAction(
 @Composable
 fun PostCaption(
     modifier: Modifier = Modifier,
-    data: PostsData
+    post: Post
 ){
     Row(
         modifier = modifier.padding(10.dp),
@@ -176,14 +195,14 @@ fun PostCaption(
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         Text(
-            text =  data.username,
+            text =  post.username,
             fontWeight = FontWeight.W400,
             fontSize = 16.sp,
             color = Dark
-            )
+        )
 
         Text(
-            text =  data.caption,
+            text =  post.caption,
             fontWeight = FontWeight.W400,
             fontSize = 14.sp,
             color = Color.Black
@@ -192,12 +211,6 @@ fun PostCaption(
 
 }
 
-fun LazyListScope.postItemList(modifier: Modifier){
-    items(PostsList, key = {it.id}){
-        PostsRow(
-            data = it,
-            modifier = modifier
-        )
-    }
-}
+
+
 

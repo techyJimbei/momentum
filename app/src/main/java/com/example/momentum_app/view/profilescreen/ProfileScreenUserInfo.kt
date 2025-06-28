@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -23,7 +24,11 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.momentum_app.R
+import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.PostsData
+import com.example.momentum_app.model.Task
 import com.example.momentum_app.ui.theme.Logo
 import com.example.momentum_app.viewmodel.PostViewModel
 
@@ -31,7 +36,11 @@ import com.example.momentum_app.viewmodel.PostViewModel
 fun ProfileScreenUserInfo(
     modifier: Modifier = Modifier,
     context: Context,
-    postViewModel: PostViewModel
+    postViewModel: PostViewModel,
+    navController: NavController,
+    task: Task,
+    data: PostsData,
+    listpost: List<Post>
 ) {
     val posts by postViewModel.posts.collectAsState()
 
@@ -100,7 +109,13 @@ fun ProfileScreenUserInfo(
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             items(posts) { post ->
-                PostGridItem(post.image)
+                Box(
+                    modifier = modifier.clickable{
+                        navController.navigate("ProfileScreenPostPreview")
+                    }
+                ){
+                    PostGridItem(post.image)
+                }
             }
         }
     }

@@ -7,13 +7,13 @@ import com.example.momentum_app.MainActivity
 import com.example.momentum_app.model.Task
 
 @Composable
-fun Home(modifier: Modifier = Modifier, navController: NavHostController, context: MainActivity){
+fun Home(modifier: Modifier = Modifier, navController: NavHostController, context: MainActivity, task: Task){
     HomeRow(
         modifier = modifier,
         header = { HomeHeader() },
         stories = { storyItemList() },
         line = { HomeLine()},
-        posts = { postItemList()}
+        posts = { postItemList(modifier)}
     )
 
 }
