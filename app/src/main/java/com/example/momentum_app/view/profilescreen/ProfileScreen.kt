@@ -7,13 +7,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import com.example.momentum_app.MainActivity
+import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.PostsData
+import com.example.momentum_app.model.Task
 import com.example.momentum_app.viewmodel.PostViewModel
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, context: Context, postViewModel: PostViewModel){
+fun ProfileScreen(modifier: Modifier = Modifier, context: Context, postViewModel: PostViewModel, task: Task,
+                  data: PostsData,
+                  listpost: List<Post>,
+                  navController: NavController,){
 
     ProfileScreenHeader(modifier = modifier)
-    ProfileScreenUserInfo(modifier = modifier, context = context, postViewModel = postViewModel)
+    ProfileScreenUserInfo(modifier = modifier, context = context, postViewModel = postViewModel, task = task, data = data, listpost = listpost, navController = navController)
 
 }

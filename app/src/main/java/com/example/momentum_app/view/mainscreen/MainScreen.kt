@@ -29,7 +29,7 @@ import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun MainScreen(
-//    task: Task,
+    task: Task,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: MainActivity,
