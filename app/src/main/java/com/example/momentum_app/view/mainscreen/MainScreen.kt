@@ -18,6 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.momentum_app.MainActivity
 import com.example.momentum_app.R
+import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.PostsData
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.view.home.Home
 import com.example.momentum_app.view.profilescreen.ProfileScreen
@@ -33,7 +35,9 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: MainActivity,
-    postViewModel: PostViewModel
+    postViewModel: PostViewModel,
+    data: PostsData,
+    listpost: List<Post>
 ) {
     val navItemList = listOf(
         NavItem("Home", R.drawable.home_icon, R.drawable.home_onclicked_icon),
@@ -79,9 +83,15 @@ fun MainScreen(
                 navController = navController
             )
             3 -> ProgressScreen(modifier = modifier.padding(innerPadding))
-            4 -> ProfileScreen(modifier = modifier.padding(innerPadding),
+            4 -> ProfileScreen(
+                modifier = modifier.padding(innerPadding),
                 context = context,
-                postViewModel = postViewModel)
+                postViewModel = postViewModel,
+                task = task,
+                data = data,
+                listpost = listpost,
+                navController = navController
+            )
         }
     }
 }

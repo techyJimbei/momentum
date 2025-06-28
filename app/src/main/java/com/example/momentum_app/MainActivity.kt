@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.PostsData
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.view.mainscreen.MainScreen
 import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
@@ -81,14 +82,62 @@ class MainActivity : ComponentActivity() {
                                 viewModel = signUpViewModel
                             )
                         }
-                        composable("MainScreen") {
+                        composable(
+                            route = "MainScreen/{title}/{description}/{username}/{caption}/{image}",
+                            arguments = listOf(
+                                navArgument("title") { type = NavType.StringType },
+                                navArgument("description") { type = NavType.StringType },
+                                navArgument("username") { type = NavType.StringType },
+                                navArgument("caption") { type = NavType.StringType },
+                                navArgument("image") { type = NavType.StringType },
+                            )
+                        ) { backStackEntry ->
+
+                            val title = backStackEntry.arguments?.getString("title") ?: ""
+                            val description = backStackEntry.arguments?.getString("description") ?: ""
+                            val username = backStackEntry.arguments?.getString("username") ?: ""
+                            val caption = backStackEntry.arguments?.getString("caption") ?: ""
+                            val image = backStackEntry.arguments?.getString("image") ?: ""
+
+                            val currentTime = System.currentTimeMillis()
+
+                            val task = Task(
+                                title = title,
+                                description = description,
+                                createdAt = currentTime,
+                                isCompleted = true,
+                                username = username
+                            )
+
+                            val data = PostsData(
+                                id = 1,
+                                username = username,
+                                pfp = R.drawable.dummy_pfp1,
+                                post = R.drawable.post_dummy1,
+                                caption = caption
+                            )
+
+                            val post = Post(
+                                image = image,
+                                caption = caption,
+                                taskTitle = title,
+                                taskDescription = description,
+                                timestamp = currentTime,
+                                username = username
+                            )
+
+                            val listpost = listOf(post)
+
                             MainScreen(
                                 navController = navController,
                                 context = this@MainActivity,
-                                postViewModel = postViewModel
-//                                task = task
+                                postViewModel = postViewModel,
+                                task = task,
+                                data = data,
+                                listpost = listpost
                             )
                         }
+
                         composable("TaskListScreen") {
                             TaskListScreen(
                                 viewModel = taskListViewModel,
