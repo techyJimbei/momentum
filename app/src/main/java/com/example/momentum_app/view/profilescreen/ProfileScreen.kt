@@ -15,12 +15,19 @@ import com.example.momentum_app.model.Task
 import com.example.momentum_app.viewmodel.PostViewModel
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, context: Context, postViewModel: PostViewModel, task: Task,
-                  data: PostsData,
-                  listpost: List<Post>,
-                  navController: NavController,){
-
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    context: Context,
+    postViewModel: PostViewModel,
+    navController: NavController
+)
+{
     ProfileScreenHeader(modifier = modifier)
-    ProfileScreenUserInfo(modifier = modifier, context = context, postViewModel = postViewModel, task = task, data = data, listpost = listpost, navController = navController)
+    ProfileScreenUserInfo(
+        modifier = modifier,
+        context = context,
+        postViewModel = postViewModel,
+        navController = navController
+    )
 
 }

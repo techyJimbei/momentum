@@ -31,14 +31,12 @@ import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
 fun MainScreen(
-    task: Task,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: MainActivity,
-    postViewModel: PostViewModel,
-    data: PostsData,
-    listpost: List<Post>
-) {
+    postViewModel: PostViewModel
+)
+ {
     val navItemList = listOf(
         NavItem("Home", R.drawable.home_icon, R.drawable.home_onclicked_icon),
         NavItem("Rewards", R.drawable.rewards_icon, R.drawable.rewards_onclicked_icon),
@@ -87,9 +85,6 @@ fun MainScreen(
                 modifier = modifier.padding(innerPadding),
                 context = context,
                 postViewModel = postViewModel,
-                task = task,
-                data = data,
-                listpost = listpost,
                 navController = navController
             )
         }

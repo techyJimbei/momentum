@@ -37,10 +37,7 @@ fun ProfileScreenUserInfo(
     modifier: Modifier = Modifier,
     context: Context,
     postViewModel: PostViewModel,
-    navController: NavController,
-    task: Task,
-    data: PostsData,
-    listpost: List<Post>
+    navController: NavController
 ) {
     val posts by postViewModel.posts.collectAsState()
 
@@ -51,7 +48,7 @@ fun ProfileScreenUserInfo(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(vertical =  50.dp),
+            .padding(vertical = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -110,16 +107,18 @@ fun ProfileScreenUserInfo(
         ) {
             items(posts) { post ->
                 Box(
-                    modifier = modifier.clickable{
+                    modifier = modifier.clickable {
+                        postViewModel.selectPost(post)
                         navController.navigate("ProfileScreenPostPreview")
                     }
-                ){
+                ) {
                     PostGridItem(post.image)
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun PostGridItem(base64Image: String) {

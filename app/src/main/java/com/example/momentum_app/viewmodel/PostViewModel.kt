@@ -1,6 +1,8 @@
 package com.example.momentum_app.viewmodel
 
 import android.content.Context
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.momentum_app.model.Post
@@ -15,6 +17,13 @@ class PostViewModel : ViewModel() {
 
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts.asStateFlow()
+
+    private var _selectedPost = mutableStateOf<Post?>(null)
+    val selectedPost: State<Post?> = _selectedPost
+
+    fun selectPost(post: Post) {
+        _selectedPost.value = post
+    }
 
     fun createPost(
         context: Context,
