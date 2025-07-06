@@ -45,7 +45,7 @@ fun ProfileScreenPostPreview(
         LazyColumn(
             modifier = modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
+                .padding(vertical = 40.dp)
         ) {
             item {
                 PostsRow(post = post)
@@ -64,52 +64,63 @@ fun PostsRow(
     val pager = rememberPagerState(initialPage = 0) { 1 }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
     ) {
+        // Username + PFP
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
-                .padding(horizontal = 10.dp)
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
                 .fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(R.drawable.dummy_pfp1),
                 contentDescription = null,
-                modifier = modifier.size(38.dp)
+                modifier = Modifier.size(40.dp)
             )
 
             Text(
                 text = post.username,
                 fontWeight = FontWeight.W600,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Task Title + Description
         Text(
             text = "${post.taskTitle}: ${post.taskDescription}",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.W700,
+            fontSize = 15.sp,
+            fontWeight = FontWeight.W600,
             fontStyle = FontStyle.Italic,
-            color = Color.DarkGray
+            color = Color.DarkGray,
+            modifier = Modifier.padding(horizontal = 12.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
-
+        // Post Image
         PostPicture(pagerState = pager, post = post)
+
+        // Action buttons
         PostAction(pagerState = pager)
+
+        // Caption
         PostCaption(post = post)
 
+        // Divider
         Spacer(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
+                .height(0.5.dp)
                 .background(Color.LightGray)
-                .height(0.3.dp)
+                .padding(top = 4.dp)
         )
     }
 }
+
 
 @Composable
 fun PostPicture(

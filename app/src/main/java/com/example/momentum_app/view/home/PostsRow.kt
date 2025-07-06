@@ -23,15 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.momentum_app.R
-import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.PostsData
 import com.example.momentum_app.model.PostsList
-import com.example.momentum_app.model.Task
 import com.example.momentum_app.ui.theme.Dark
 import com.example.momentum_app.ui.theme.Logo
 import com.example.momentum_app.ui.theme.Powder_Blue
@@ -41,87 +38,97 @@ import com.example.momentum_app.ui.theme.Powder_Blue
 fun PostsRow(
     modifier: Modifier = Modifier,
     data: PostsData,
-//    task: Task
-){
-    val pager = rememberPagerState(initialPage = 0){3}
+) {
+    val pager = rememberPagerState(initialPage = 0) { 3 }
+
     Column(
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+            .fillMaxWidth()
     ) {
+        // Username and PFP
         Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier
-                .padding(horizontal = 10.dp)
+            modifier = Modifier
+                .padding(horizontal = 12.dp)
                 .fillMaxWidth()
         ) {
             Image(
                 painter = painterResource(data.pfp),
                 contentDescription = null,
-                modifier =  modifier
-                    .size(38.dp)
+                modifier = Modifier.size(38.dp)
             )
 
             Text(
                 text = data.username,
                 fontWeight = FontWeight.W600,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-//        Text(
-//            text = "${task.title}: ${task.description}",
-//            fontSize = 16.sp,
-//            fontWeight = FontWeight.W700,
-//            fontStyle = FontStyle.Italic,
-//            color = Color.DarkGray
-//            )
-//
-//        Spacer(modifier = Modifier.height(16.dp))
-
-        PostPicture(modifier = Modifier, pagerState = pager, data = data)
-        PostAction(pagerState = pager)
-        PostCaption(data = data)
-
-        Spacer(modifier = modifier
-            .fillMaxWidth()
-            .background(Color.LightGray)
-            .height(0.3.dp)
+        // Post Image Pager
+        PostPicture(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 0.dp),
+            pagerState = pager,
+            data = data
         )
 
+        // Actions Row
+        PostAction(
+            modifier = Modifier.padding(top = 4.dp),
+            pagerState = pager
+        )
+
+        // Caption Row
+        PostCaption(
+            modifier = Modifier.padding(horizontal = 12.dp),
+            data = data
+        )
+
+        // Bottom Divider
+        Spacer(
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .fillMaxWidth()
+                .height(0.5.dp)
+                .background(Color.LightGray)
+        )
     }
 }
-
 
 @Composable
 fun PostPicture(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
     data: PostsData
-){
+) {
     HorizontalPager(
-        modifier = modifier, state = pagerState
+        modifier = modifier,
+        state = pagerState
     ) {
         Image(
             painter = painterResource(data.post),
             contentDescription = null,
-            modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         )
     }
-
 }
 
 @Composable
 fun PostAction(
     modifier: Modifier = Modifier,
     pagerState: PagerState,
-){
+) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(horizontal = 12.dp, vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -130,38 +137,35 @@ fun PostAction(
             Image(
                 painter = painterResource(R.drawable.like_icon),
                 contentDescription = null,
-                modifier = modifier
-                    .size(30.dp)
-                    .clickable {  })
+                modifier = Modifier.size(28.dp).clickable { }
+            )
             Image(
                 painter = painterResource(R.drawable.comments_icon),
                 contentDescription = null,
-                modifier = modifier
-                    .size(30.dp)
-                    .clickable {  })
+                modifier = Modifier.size(28.dp).clickable { }
+            )
             Image(
                 painter = painterResource(R.drawable.share_icon),
                 contentDescription = null,
-                modifier = modifier
-                    .size(30.dp)
-                    .clickable {  })
+                modifier = Modifier.size(28.dp).clickable { }
+            )
         }
+
         Row(
-            horizontalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            repeat(pagerState.pageCount){
+            repeat(pagerState.pageCount) {
                 Spacer(
-                    modifier = modifier
+                    modifier = Modifier
                         .size(8.dp)
                         .background(
-                            color = if(pagerState.currentPage == it) Logo else Powder_Blue,
+                            color = if (pagerState.currentPage == it) Logo else Powder_Blue,
                             shape = CircleShape
                         )
                 )
             }
         }
-
     }
 }
 
@@ -169,35 +173,33 @@ fun PostAction(
 fun PostCaption(
     modifier: Modifier = Modifier,
     data: PostsData
-){
+) {
     Row(
-        modifier = modifier.padding(10.dp),
+        modifier = modifier.padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text =  data.username,
-            fontWeight = FontWeight.W400,
-            fontSize = 16.sp,
+            text = data.username,
+            fontWeight = FontWeight.W500,
+            fontSize = 15.sp,
             color = Dark
-            )
+        )
 
         Text(
-            text =  data.caption,
+            text = data.caption,
             fontWeight = FontWeight.W400,
             fontSize = 14.sp,
             color = Color.Black
         )
     }
-
 }
 
-fun LazyListScope.postItemList(modifier: Modifier){
-    items(PostsList, key = {it.id}){
+fun LazyListScope.postItemList(modifier: Modifier) {
+    items(PostsList, key = { it.id }) {
         PostsRow(
             data = it,
             modifier = modifier
         )
     }
 }
-

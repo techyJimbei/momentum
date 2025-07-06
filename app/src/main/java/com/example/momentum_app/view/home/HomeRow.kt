@@ -27,8 +27,8 @@ fun HomeRow(
             .background(color = Color.White)
     ) {
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(vertical = 10.dp)
+            verticalArrangement = Arrangement.Center,
+            contentPadding = PaddingValues(vertical = 4.dp)
 
         ) {
             item{

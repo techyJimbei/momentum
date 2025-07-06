@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +18,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -26,9 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.momentum_app.R
-import com.example.momentum_app.model.Post
-import com.example.momentum_app.model.PostsData
-import com.example.momentum_app.model.Task
 import com.example.momentum_app.ui.theme.Logo
 import com.example.momentum_app.viewmodel.PostViewModel
 
@@ -109,7 +107,14 @@ fun ProfileScreenUserInfo(
                 Box(
                     modifier = modifier.clickable {
                         postViewModel.selectPost(post)
-                        navController.navigate("ProfileScreenPostPreview")
+                        navController.navigate(
+                            "ProfileScreenPostPreview/" +
+                                    "${Uri.encode(post.username)}/" +
+                                    "${Uri.encode(post.caption)}/" +
+                                    "${Uri.encode(post.image)}/" +
+                                    "${Uri.encode(post.taskTitle)}/" +
+                                    "${Uri.encode(post.taskDescription)}"
+                        )
                     }
                 ) {
                     PostGridItem(post.image)
@@ -132,7 +137,7 @@ fun PostGridItem(base64Image: String) {
             contentDescription = "Post image",
             modifier = Modifier
                 .aspectRatio(1f)
-                .clip(CircleShape)
+
         )
     }
 }
