@@ -74,7 +74,7 @@ fun ProfileScreenUserInfo(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "@Coins: ${coinCount ?: "Loading..."}",
+            text = "Coins: ${coinCount ?: "Loading..."}",
             fontSize = 20.sp,
             fontWeight = FontWeight.W300,
             fontStyle = FontStyle.Italic,

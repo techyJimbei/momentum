@@ -1,6 +1,7 @@
 package com.example.momentum_app.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.momentum_app.repository.UserRepository
@@ -53,13 +54,15 @@ class SignUpViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = repository.showCoins(username)
+                Log.d("CoinsResponse", "Coins: ${response.body()?.coins}")
                 if (response.isSuccessful) {
                     val coinsDTO = response.body()
-                    _coinCount.value = coinsDTO?.coin
+                    _coinCount.value = coinsDTO?.coins
                     onResult(true)
                 } else {
                     onResult(false)
                 }
+
             } catch (e: Exception) {
                 onResult(false)
             }
