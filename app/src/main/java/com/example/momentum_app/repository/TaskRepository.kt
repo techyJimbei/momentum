@@ -43,4 +43,8 @@ class TaskRepository {
         )
         return api.editTask(id,updatedTask)
     }
+
+    suspend fun checkedTask(id: Int): Response<Void>{
+        return api.completeTask(id)
+    }
 }

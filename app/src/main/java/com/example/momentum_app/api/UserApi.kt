@@ -1,6 +1,7 @@
 package com.example.momentum_app.api
 
 
+import com.example.momentum_app.model.Coins
 import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.model.TokenAccept
@@ -41,10 +42,16 @@ interface UserApi {
     @GET("/api/tasks")
     suspend fun showAllTasks(): Response<List<Task>>
 
+    @POST("/api/task/{id}/complete")
+    suspend fun completeTask(@Path("id") id: Int): Response<Void>
+
     @POST("/api/post")
     suspend fun sharePost(@Body post: Post): Response<Void>
 
     @GET("/api/posts")
     suspend fun getAllPosts(): Response<List<Post>>
+
+    @GET("/api/auth/coins/{username}")
+    suspend fun getCoins(@Path("username") username: String) : Response<Coins>
 
 }

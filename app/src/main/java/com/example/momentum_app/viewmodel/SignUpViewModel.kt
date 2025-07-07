@@ -4,11 +4,15 @@ import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.momentum_app.repository.UserRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
 class SignUpViewModel : ViewModel() {
     private val repository = UserRepository()
+    private val _coinCount = MutableStateFlow<Int?>(null)
+    val coinCount: StateFlow<Int?> = _coinCount
 
     fun registerUser(context: Context,username: String, email: String, password: String, onResult: (Boolean, String) -> Unit) {
         viewModelScope.launch {
@@ -32,10 +36,11 @@ class SignUpViewModel : ViewModel() {
     fun loginUser(context: Context,username: String, password: String, onResult: (Boolean, String) -> Unit){
         viewModelScope.launch {
             val login = repository.signIn(username, password)
-            saveUsername(context, username)
+
 
             if (login.isSuccessful)
             {
+                saveUsername(context, username)
                 onResult(true, "User logged in successfully")
             } else
             {
@@ -43,6 +48,24 @@ class SignUpViewModel : ViewModel() {
             }
         }
     }
+
+    fun getCoins(username: String, onResult: (Boolean) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.showCoins(username)
+                if (response.isSuccessful) {
+                    val coinsDTO = response.body()
+                    _coinCount.value = coinsDTO?.coin
+                    onResult(true)
+                } else {
+                    onResult(false)
+                }
+            } catch (e: Exception) {
+                onResult(false)
+            }
+        }
+    }
+
 }
 fun saveUsername(context: Context, username: String) {
     val sharedPref = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)

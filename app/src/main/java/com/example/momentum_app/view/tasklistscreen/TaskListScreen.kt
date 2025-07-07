@@ -1,7 +1,10 @@
 package com.example.momentum_app.view.tasklistscreen
 
 import android.content.Context
+import android.net.Uri
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -30,25 +33,38 @@ fun TaskListScreen(
     var showShareDialog by remember { mutableStateOf(false) }
     var completedTaskTitle by remember { mutableStateOf("") }
     var completedTaskDesc by remember { mutableStateOf("") }
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
 
     val taskList by viewModel.taskList.collectAsState()
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        uri?.let {
+            imageUri = it
+            navController.navigate(
+                "ShareStoryScreen/${Uri.encode(it.toString())}/${completedTaskTitle}/${completedTaskDesc}"
+            )
+        }
+    }
+
+
 
     Scaffold(
         containerColor = Color.White,
         floatingActionButton = {
             TaskListAddButton(
                 onClick = { showAddDialog = true },
-                modifier = Modifier.padding(bottom = 90.dp, end = 10.dp)
+                modifier = modifier.padding(bottom = 90.dp, end = 10.dp)
             )
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding).fillMaxSize()) {
+        Column(modifier = modifier.padding(padding).fillMaxSize()) {
             TaskListHeader()
             TaskListGreeting(context = context)
 
             if (taskList.isEmpty()) {
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .padding(32.dp),
                     contentAlignment = Alignment.Center
@@ -68,7 +84,7 @@ fun TaskListScreen(
                                 val id = task.id
                                 if (id != null) {
                                     viewModel.removeTask(id) { success, msg ->
-                                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "task deleted successfully", Toast.LENGTH_SHORT).show()
                                     }
                                 } else {
                                     Toast.makeText(context, "Cannot delete task: ID is null", Toast.LENGTH_SHORT).show()
@@ -83,6 +99,14 @@ fun TaskListScreen(
                                 }
                             },
                             onComplete = {
+                                val id = task.id
+                                if (id != null) {
+                                    viewModel.completeTask(id) { success, msg ->
+                                        Toast.makeText(context, "task completed successfully", Toast.LENGTH_SHORT).show()
+                                    }
+                                } else {
+                                    Toast.makeText(context, "Cannot complete task: ID is null", Toast.LENGTH_SHORT).show()
+                                }
                                 completedTaskTitle = task.title
                                 showShareDialog = true
                             }
@@ -138,8 +162,8 @@ fun TaskListScreen(
                         navController.navigate("SharePostScreen/${completedTaskTitle}/${completedTaskDesc}")
                     },
                     onShareStory = {
+                        imagePickerLauncher.launch("image/*")
                         showShareDialog = false
-                        Toast.makeText(context, "Shared as Story!", Toast.LENGTH_SHORT).show()
                     }
                 )
             }

@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Base64
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -25,22 +26,28 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.momentum_app.R
 import com.example.momentum_app.ui.theme.Logo
 import com.example.momentum_app.viewmodel.PostViewModel
+import com.example.momentum_app.viewmodel.SignUpViewModel
 
 @Composable
 fun ProfileScreenUserInfo(
     modifier: Modifier = Modifier,
     context: Context,
     postViewModel: PostViewModel,
-    navController: NavController
+    navController: NavController,
+    userViewModel: SignUpViewModel
 ) {
     val posts by postViewModel.posts.collectAsState()
+    val coinCount by userViewModel.coinCount.collectAsState()
 
     LaunchedEffect(Unit) {
         postViewModel.fetchPosts()
+        userViewModel.getCoins(getUsername(context)) {success ->
+        }
     }
 
     Column(
@@ -67,7 +74,7 @@ fun ProfileScreenUserInfo(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = "+10000 $ coins",
+            text = "@Coins: ${coinCount ?: "Loading..."}",
             fontSize = 20.sp,
             fontWeight = FontWeight.W300,
             fontStyle = FontStyle.Italic,

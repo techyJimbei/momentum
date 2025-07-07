@@ -13,13 +13,15 @@ import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.PostsData
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.viewmodel.PostViewModel
+import com.example.momentum_app.viewmodel.SignUpViewModel
 
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     context: Context,
     postViewModel: PostViewModel,
-    navController: NavController
+    navController: NavController,
+    userViewModel: SignUpViewModel
 )
 {
     ProfileScreenHeader(modifier = modifier)
@@ -27,7 +29,8 @@ fun ProfileScreen(
         modifier = modifier,
         context = context,
         postViewModel = postViewModel,
-        navController = navController
+        navController = navController,
+        userViewModel = userViewModel
     )
 
 }

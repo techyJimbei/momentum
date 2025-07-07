@@ -75,7 +75,8 @@ class MainActivity : ComponentActivity() {
                                 postViewModel = postViewModel,
                                 context = this@MainActivity,
                                 modifier = Modifier,
-                                navController = navController
+                                navController = navController,
+                                userViewModel = signUpViewModel
                             )
                         }
 
@@ -139,7 +140,7 @@ class MainActivity : ComponentActivity() {
 
                             ProfileScreenPostPreview(
                                 modifier = Modifier,
-                                postViewModel = postViewModel
+                                post = post
                             )
                         }
                     }

@@ -1,6 +1,7 @@
 package com.example.momentum_app.repository
 
 import com.example.momentum_app.api.RetrofitInstance
+import com.example.momentum_app.model.Coins
 import com.example.momentum_app.model.UserLogin
 import com.example.momentum_app.model.UserRequest
 import retrofit2.Response
@@ -26,4 +27,9 @@ class UserRepository {
     suspend fun signUp(username: String, email: String, password: String): Response<Void> {
         return api.registerUser(UserRequest(username, email, password))
     }
+
+    suspend fun showCoins(username: String): Response<Coins> {
+        return api.getCoins(username)
+    }
+
 }

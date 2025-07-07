@@ -37,10 +37,8 @@ import com.example.momentum_app.viewmodel.PostViewModel
 @Composable
 fun ProfileScreenPostPreview(
     modifier: Modifier = Modifier,
-    postViewModel: PostViewModel
+    post: Post?
 ) {
-    val post = postViewModel.selectedPost.value
-
     if (post != null) {
         LazyColumn(
             modifier = modifier
@@ -55,6 +53,7 @@ fun ProfileScreenPostPreview(
         Text("No post selected.")
     }
 }
+
 
 @Composable
 fun PostsRow(

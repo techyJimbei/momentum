@@ -94,4 +94,21 @@ class TaskListViewModel : ViewModel() {
             }
         }
     }
+
+    fun completeTask(id: Int, onResult: (Boolean, String) -> Unit){
+        viewModelScope.launch{
+            try{
+                val response = repository.checkedTask(id)
+                if(response.isSuccessful){
+                    onResult(true, "Task completed Successfully")
+                }
+                else{
+                    onResult(false, "Failed to complete Task")
+                }
+            }
+            catch(e: Exception){
+                onResult(false, "Error: ${e.message}")
+            }
+        }
+    }
 }

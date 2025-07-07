@@ -27,6 +27,7 @@ import com.example.momentum_app.view.progressscreen.ProgressScreen
 import com.example.momentum_app.view.rewardsscreen.RewardsScreen
 import com.example.momentum_app.view.tasklistscreen.TaskListScreen
 import com.example.momentum_app.viewmodel.PostViewModel
+import com.example.momentum_app.viewmodel.SignUpViewModel
 import com.example.momentum_app.viewmodel.TaskListViewModel
 
 @Composable
@@ -34,7 +35,8 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     context: MainActivity,
-    postViewModel: PostViewModel
+    postViewModel: PostViewModel,
+    userViewModel: SignUpViewModel
 )
  {
     val navItemList = listOf(
@@ -85,7 +87,8 @@ fun MainScreen(
                 modifier = modifier.padding(innerPadding),
                 context = context,
                 postViewModel = postViewModel,
-                navController = navController
+                navController = navController,
+                userViewModel = userViewModel
             )
         }
     }
