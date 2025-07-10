@@ -33,6 +33,7 @@ fun TaskListScreen(
     var showShareDialog by remember { mutableStateOf(false) }
     var completedTaskTitle by remember { mutableStateOf("") }
     var completedTaskDesc by remember { mutableStateOf("") }
+    var completedTaskId by remember { mutableStateOf<Int?>(null) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
 
     val taskList by viewModel.taskList.collectAsState()
@@ -42,7 +43,7 @@ fun TaskListScreen(
         uri?.let {
             imageUri = it
             navController.navigate(
-                "ShareStoryScreen/${Uri.encode(it.toString())}/${completedTaskTitle}/${completedTaskDesc}"
+                "ShareStoryScreen/${Uri.encode(it.toString())}/${completedTaskTitle}/${completedTaskDesc}/${completedTaskId}"
             )
         }
     }
@@ -104,10 +105,12 @@ fun TaskListScreen(
                                     viewModel.completeTask(id) { success, msg ->
                                         Toast.makeText(context, "task completed successfully", Toast.LENGTH_SHORT).show()
                                     }
+                                    completedTaskId = id
                                 } else {
                                     Toast.makeText(context, "Cannot complete task: ID is null", Toast.LENGTH_SHORT).show()
                                 }
                                 completedTaskTitle = task.title
+                                completedTaskDesc = task.description
                                 showShareDialog = true
                             }
                         )

@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 fun HomeRow(
     modifier: Modifier = Modifier,
     header: (@Composable () -> Unit)? = null,
-    stories: (LazyListScope.() -> Unit)? = null,
+    stories: (@Composable () -> Unit)? = null,
     line: (@Composable () -> Unit)? = null,
     posts: (LazyListScope.() -> Unit)? = null
 ) {
@@ -29,9 +29,8 @@ fun HomeRow(
         LazyColumn(
             verticalArrangement = Arrangement.Center,
             contentPadding = PaddingValues(vertical = 4.dp)
-
         ) {
-            item{
+            item {
                 header?.invoke()
             }
             item {
@@ -39,16 +38,15 @@ fun HomeRow(
                     contentPadding = PaddingValues(horizontal = 16.dp),
                     horizontalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    stories?.invoke(this)
+                    item {
+                        stories?.invoke()
+                    }
                 }
             }
-            item{
+            item {
                 line?.invoke()
             }
             posts?.invoke(this)
         }
-
     }
 }
-
-

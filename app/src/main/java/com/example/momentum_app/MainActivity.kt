@@ -1,6 +1,7 @@
 package com.example.momentum_app
 
 import AppTheme
+import android.net.Uri
 import com.example.momentum_app.viewmodel.SignUpViewModel
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,6 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -21,12 +23,16 @@ import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
 import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
 import com.example.momentum_app.view.profilescreen.ProfileScreenPostPreview
 import com.example.momentum_app.view.sharingtask.SharePostScreen
+import com.example.momentum_app.view.sharingtask.ShareStoryScreen
 import com.example.momentum_app.view.signinpage.SignInPage
 import com.example.momentum_app.view.signuppage.SignUpPage
 import com.example.momentum_app.view.splashscreen.SplashScreen
+import com.example.momentum_app.view.storyscreen.StoryFullScreen
 import com.example.momentum_app.view.tasklistscreen.TaskListScreen
 import com.example.momentum_app.viewmodel.PostViewModel
+import com.example.momentum_app.viewmodel.StoryViewModel
 import com.example.momentum_app.viewmodel.TaskListViewModel
+import java.net.URLDecoder
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +41,7 @@ class MainActivity : ComponentActivity() {
         val signUpViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
         val taskListViewModel = ViewModelProvider(this)[TaskListViewModel::class.java]
         val postViewModel = ViewModelProvider(this)[PostViewModel::class.java]
+        val storyViewModel = ViewModelProvider(this)[StoryViewModel::class.java]
 
         enableEdgeToEdge()
         setContent {
@@ -76,7 +83,9 @@ class MainActivity : ComponentActivity() {
                                 context = this@MainActivity,
                                 modifier = Modifier,
                                 navController = navController,
-                                userViewModel = signUpViewModel
+                                userViewModel = signUpViewModel,
+                                storyViewModel = storyViewModel,
+                                taskListViewModel = taskListViewModel
                             )
                         }
 
@@ -107,6 +116,44 @@ class MainActivity : ComponentActivity() {
                                 context = this@MainActivity
                             )
                         }
+
+                        composable(
+                            "ShareStoryScreen/{imageUri}/{taskTitle}/{taskDesc}/{taskId}"
+                        ) { backStackEntry ->
+                            val imageUri = backStackEntry.arguments?.getString("imageUri") ?: ""
+                            val taskTitle = backStackEntry.arguments?.getString("taskTitle") ?: ""
+                            val taskDesc = backStackEntry.arguments?.getString("taskDesc") ?: ""
+                            val taskId = backStackEntry.arguments?.getString("taskId")?.toIntOrNull() ?: -1
+
+                            ShareStoryScreen(
+                                navController = navController,
+                                storyViewModel = storyViewModel,
+                                imageUriStr = imageUri,
+                                taskTitle = taskTitle,
+                                taskDesc = taskDesc,
+                                taskId = taskId
+                            )
+                        }
+
+                        composable(
+                            "story_display/{image}/{caption}/{username}",
+                            arguments = listOf(
+                                navArgument("image") { type = NavType.StringType },
+                                navArgument("caption") { type = NavType.StringType },
+                                navArgument("username") { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            val image = backStackEntry.arguments?.getString("image") ?: ""
+                            val caption = backStackEntry.arguments?.getString("caption") ?: ""
+                            val username = backStackEntry.arguments?.getString("username") ?: ""
+
+                            StoryFullScreen(
+                                imageBase64 = URLDecoder.decode(image, "UTF-8"),
+                                caption = URLDecoder.decode(caption, "UTF-8"),
+                                username = URLDecoder.decode(username, "UTF-8")
+                            )
+                        }
+
 
                         composable(
                             route = "ProfileScreenPostPreview/{username}/{caption}/{image}/{title}/{description}",

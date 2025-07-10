@@ -24,7 +24,7 @@ object RetrofitInstance {
 
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.155.37:8080/")
+            .baseUrl("http://192.168.169.207:8080/")
             .client(client) // Use client with logging
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

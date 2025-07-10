@@ -3,6 +3,7 @@ package com.example.momentum_app.api
 
 import com.example.momentum_app.model.Coins
 import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.Story
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.model.TokenAccept
 import com.example.momentum_app.model.UserLogin
@@ -54,4 +55,9 @@ interface UserApi {
     @GET("/api/auth/coins/{username}")
     suspend fun getCoins(@Path("username") username: String) : Response<Coins>
 
+    @POST("/stories/post")
+    suspend fun postStory(@Body story: Story) : Response<Story>
+
+    @GET("/stories/active")
+    suspend fun getStories(): Response<List<Story>>
 }
