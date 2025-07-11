@@ -10,12 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.momentum_app.R
 import com.example.momentum_app.model.Story
+import com.example.momentum_app.model.StoryData
 import com.example.momentum_app.viewmodel.StoryViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -44,7 +47,9 @@ fun StoryRow(
         )
 
         LazyRow(
-            modifier = Modifier.padding(start = 12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(storyList) { story ->
@@ -53,7 +58,7 @@ fun StoryRow(
                     val encodedCaption = URLEncoder.encode(story.caption, StandardCharsets.UTF_8.toString())
                     val encodedUsername = URLEncoder.encode(story.username, StandardCharsets.UTF_8.toString())
 
-                    navController.navigate("story_display/$encodedImage/$encodedCaption/$encodedUsername")
+                    navController.navigate("StoryFullScreen/$encodedImage/$encodedCaption/$encodedUsername")
                 })
             }
         }
@@ -77,7 +82,7 @@ fun StoryBubble(
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             AsyncImage(
-                model = "data:image/jpeg;base64,${story.image}",
+                model = painterResource(id = R.drawable.dummy_pfp1),
                 contentDescription = "Story Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

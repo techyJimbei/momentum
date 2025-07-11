@@ -34,14 +34,7 @@ fun HomeRow(
                 header?.invoke()
             }
             item {
-                LazyRow(
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    item {
-                        stories?.invoke()
-                    }
-                }
+                stories?.invoke()
             }
             item {
                 line?.invoke()

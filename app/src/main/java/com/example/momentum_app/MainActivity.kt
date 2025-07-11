@@ -136,7 +136,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            "story_display/{image}/{caption}/{username}",
+                            "StoryFullScreen/{image}/{caption}/{username}",
                             arguments = listOf(
                                 navArgument("image") { type = NavType.StringType },
                                 navArgument("caption") { type = NavType.StringType },
