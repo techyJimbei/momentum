@@ -165,7 +165,7 @@ fun ShareStoryScreen(
                             taskId = taskId,
                             onResult = { success, message ->
                                 if (success) {
-                                    navController.popBackStack()
+                                    navController.navigate("TaskListScreen")
                                 }
                             }
                         )
