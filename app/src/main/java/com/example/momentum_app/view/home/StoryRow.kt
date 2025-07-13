@@ -80,7 +80,7 @@ fun StoryBubble(
     story: Story,
     onClick: () -> Unit
 ) {
-    val imageDataUri = "data:image/png;base64,${story.image}"
+    val imageDataUri = "data:image/jpeg;base64,${story.image}"
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -94,7 +94,7 @@ fun StoryBubble(
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             AsyncImage(
-                model = imageDataUri,
+                model = imageDataUri.trim().trim('"'),
                 contentDescription = "Story Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

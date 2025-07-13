@@ -165,7 +165,7 @@ fun ShareStoryScreen(
                             taskId = taskId,
                             onResult = { success, message ->
                                 if (success) {
-                                    navController.navigate("TaskListScreen")
+                                    navController.navigate("MainScreen")
                                 }
                             }
                         )
@@ -193,7 +193,7 @@ fun encodeImageToBase64(context: Context, uri: Uri): String? {
         val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes()
         inputStream?.close()
-        Base64.encodeToString(bytes, Base64.DEFAULT)
+        Base64.encodeToString(bytes, Base64.NO_WRAP) // ⬅ Change this line
     } catch (e: Exception) {
         null
     }

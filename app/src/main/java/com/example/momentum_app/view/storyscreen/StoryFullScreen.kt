@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,13 +21,17 @@ fun StoryFullScreen(
     caption: String,
     username: String
 ) {
+    val imageDataUri = remember(imageBase64) {
+        "data:image/jpeg;base64,${imageBase64.trim().trim('"')}"
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
+
         AsyncImage(
-            model = "data:image/jpeg;base64,$imageBase64",
+            model = imageDataUri,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()
