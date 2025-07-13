@@ -23,13 +23,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.momentum_app.R
 import com.example.momentum_app.model.Story
 import com.example.momentum_app.viewmodel.StoryViewModel
 import java.net.URLEncoder
@@ -61,7 +59,7 @@ fun StoryRow(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 12.dp),
+                .padding(start = 12.dp, bottom = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(storyList) { story ->
@@ -82,6 +80,8 @@ fun StoryBubble(
     story: Story,
     onClick: () -> Unit
 ) {
+    val imageDataUri = "data:image/png;base64,${story.image}"
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -94,7 +94,7 @@ fun StoryBubble(
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
             AsyncImage(
-                model = painterResource(id = R.drawable.dummy_pfp1),
+                model = imageDataUri,
                 contentDescription = "Story Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()

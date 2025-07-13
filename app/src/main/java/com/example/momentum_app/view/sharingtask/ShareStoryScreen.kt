@@ -198,3 +198,4 @@ fun encodeImageToBase64(context: Context, uri: Uri): String? {
         null
     }
 }
+
