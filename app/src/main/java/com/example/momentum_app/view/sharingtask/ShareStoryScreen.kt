@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Base64
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTransformGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,6 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -59,6 +62,10 @@ fun ShareStoryScreen(
     val username = getUsername(context)
     val pfpPlaceholder = painterResource(id = R.drawable.dummy_pfp1)
 
+    var scale by remember { mutableStateOf(1f) }
+    var offsetX by remember { mutableStateOf(0f) }
+    var offsetY by remember { mutableStateOf(0f) }
+
     var caption by remember { mutableStateOf("") }
 
     val imageBase64 = remember(imageUri) {
@@ -69,12 +76,32 @@ fun ShareStoryScreen(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        AsyncImage(
-            model = imageUri,
-            contentDescription = "Selected Story Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize()
-        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTransformGestures { _, pan, zoom, _ ->
+                        scale *= zoom
+                        offsetX += pan.x
+                        offsetY += pan.y
+                    }
+                }
+        ) {
+            AsyncImage(
+                model = imageUri,
+                contentDescription = "Selected Story Image",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        translationX = offsetX
+                        translationY = offsetY
+                        scaleX = scale
+                        scaleY = scale
+                    }
+            )
+        }
+
 
         Box(
             modifier = Modifier
@@ -193,7 +220,7 @@ fun encodeImageToBase64(context: Context, uri: Uri): String? {
         val inputStream: InputStream? = context.contentResolver.openInputStream(uri)
         val bytes = inputStream?.readBytes()
         inputStream?.close()
-        Base64.encodeToString(bytes, Base64.NO_WRAP) // ⬅ Change this line
+        Base64.encodeToString(bytes, Base64.NO_WRAP)
     } catch (e: Exception) {
         null
     }

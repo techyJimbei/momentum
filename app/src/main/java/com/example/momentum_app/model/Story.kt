@@ -6,5 +6,6 @@ data class Story(
     val caption: String,
     val image: String,
     val taskId: Int,
-    val username: String
+    val username: String,
+
 )

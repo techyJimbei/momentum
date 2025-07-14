@@ -18,6 +18,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.momentum_app.model.Post
+import com.example.momentum_app.model.Story
 import com.example.momentum_app.view.mainscreen.MainScreen
 import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
 import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
@@ -135,25 +136,9 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(
-                            "StoryFullScreen/{image}/{caption}/{username}",
-                            arguments = listOf(
-                                navArgument("image") { type = NavType.StringType },
-                                navArgument("caption") { type = NavType.StringType },
-                                navArgument("username") { type = NavType.StringType }
-                            )
-                        ) { backStackEntry ->
-                            val image = backStackEntry.arguments?.getString("image") ?: ""
-                            val caption = backStackEntry.arguments?.getString("caption") ?: ""
-                            val username = backStackEntry.arguments?.getString("username") ?: ""
-
-                            StoryFullScreen(
-                                imageBase64 = URLDecoder.decode(image, "UTF-8"),
-                                caption = URLDecoder.decode(caption, "UTF-8"),
-                                username = URLDecoder.decode(username, "UTF-8")
-                            )
+                        composable("StoryFullScreen") {
+                            StoryFullScreen(storyViewModel)
                         }
-
 
                         composable(
                             route = "ProfileScreenPostPreview/{username}/{caption}/{image}/{title}/{description}",

@@ -17,6 +17,9 @@ class StoryViewModel: ViewModel() {
     private val _stories = MutableStateFlow<List<Story>>(emptyList())
     val stories: StateFlow<List<Story>> = _stories.asStateFlow()
 
+    private val _selectedStory = MutableStateFlow<Story?>(null)
+    val selectedStory: StateFlow<Story?> = _selectedStory
+
     fun createStory(
         context: Context,
         imageBase64: String,
@@ -46,6 +49,10 @@ class StoryViewModel: ViewModel() {
                 _stories.value = response.body()?: emptyList()
             }
         }
+    }
+
+    fun setSelectedStory(story: Story) {
+        _selectedStory.value = story
     }
 
 

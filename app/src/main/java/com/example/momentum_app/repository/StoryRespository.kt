@@ -13,14 +13,15 @@ class StoryRespository {
         context: Context,
         imageBase64: String,
         caption: String,
-        taskId: Int
+        taskId: Int,
     ): Response<Story> {
         val story = Story(
             createdAt = System.currentTimeMillis(),
             caption = caption,
             image = imageBase64,
             taskId = taskId,
-            username = getUsername(context)
+            username = getUsername(context),
+
         )
 
         return api.postStory(story)

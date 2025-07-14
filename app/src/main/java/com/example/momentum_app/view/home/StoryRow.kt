@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,16 +21,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
 import com.example.momentum_app.model.Story
+import com.example.momentum_app.view.storyscreen.StoryImage
 import com.example.momentum_app.viewmodel.StoryViewModel
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun StoryRow(
@@ -39,6 +35,7 @@ fun StoryRow(
     navController: NavController
 ) {
     val storyList by storyViewModel.stories.collectAsState()
+
 
     LaunchedEffect(Unit) {
         storyViewModel.fetchStories()
@@ -64,11 +61,8 @@ fun StoryRow(
         ) {
             items(storyList) { story ->
                 StoryBubble(story = story, onClick = {
-                    val encodedImage = URLEncoder.encode(story.image, StandardCharsets.UTF_8.toString())
-                    val encodedCaption = URLEncoder.encode(story.caption, StandardCharsets.UTF_8.toString())
-                    val encodedUsername = URLEncoder.encode(story.username, StandardCharsets.UTF_8.toString())
-
-                    navController.navigate("StoryFullScreen/$encodedImage/$encodedCaption/$encodedUsername")
+                    storyViewModel.setSelectedStory(story)
+                    navController.navigate("StoryFullScreen")
                 })
             }
         }
@@ -80,7 +74,6 @@ fun StoryBubble(
     story: Story,
     onClick: () -> Unit
 ) {
-    val imageDataUri = "data:image/jpeg;base64,${story.image}"
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -93,12 +86,7 @@ fun StoryBubble(
             modifier = Modifier.size(64.dp),
             elevation = CardDefaults.cardElevation(4.dp)
         ) {
-            AsyncImage(
-                model = imageDataUri.trim().trim('"'),
-                contentDescription = "Story Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
+            StoryImage(story.image)
         }
 
         Spacer(modifier = Modifier.height(4.dp))
