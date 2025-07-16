@@ -34,4 +34,8 @@ class PostRepository {
     suspend fun fetchPosts(): Response<List<Post>> {
         return api.getAllPosts()
     }
+
+    suspend fun removePost(postId: Int): Response<Void>{
+        return api.deletePost(postId)
+    }
 }

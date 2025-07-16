@@ -3,7 +3,6 @@ package com.example.momentum_app.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.Story
 import com.example.momentum_app.repository.StoryRespository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +49,22 @@ class StoryViewModel: ViewModel() {
             }
         }
     }
+
+    fun deleteStory(storyId: Long, onResult: (Boolean, String) -> Unit) {
+        viewModelScope.launch {
+            try {
+                val response = repository.removeStory(storyId)
+                if (response.isSuccessful) {
+                    onResult(true, "Deleted")
+                } else {
+                    onResult(false, "Cannot delete")
+                }
+            } catch (e: Exception) {
+                onResult(false, e.message ?: "Error")
+            }
+        }
+    }
+
 
     fun setSelectedStory(story: Story) {
         _selectedStory.value = story

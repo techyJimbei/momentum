@@ -27,6 +27,12 @@ class StoryRespository {
         return api.postStory(story)
     }
 
+    suspend fun removeStory(storyId: Long): Response<Void> {
+        return api.deleteStory(storyId)
+    }
+
+
+
     suspend fun fetchStories() : Response<List<Story>>{
         return api.getStories()
     }

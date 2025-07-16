@@ -1,6 +1,7 @@
 package com.example.momentum_app.viewmodel
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,6 +46,26 @@ class PostViewModel : ViewModel() {
             }
         }
     }
+
+    fun deletePost(postId: Int, onResult: (Boolean, String) -> Unit){
+        viewModelScope.launch {
+            try {
+                val response = repository.removePost(postId)
+                if (response.isSuccessful) {
+                    fetchPosts()
+                    onResult(true, "Post deleted")
+                } else {
+                    Log.e("DeletePost", "Failed to delete post. Response: ${response.errorBody()?.string()}")
+                    onResult(false, "Post cannot be deleted")
+                    onResult(false, "Post cannot be deleted")
+                }
+            } catch (e: Exception) {
+                Log.e("DeletePost", "Exception occurred: ${e.message}")
+                onResult(false, "Error: ${e.message}")
+            }
+        }
+    }
+
 
     fun fetchPosts() {
         viewModelScope.launch {

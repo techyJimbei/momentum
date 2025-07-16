@@ -22,6 +22,7 @@ import com.example.momentum_app.model.Story
 import com.example.momentum_app.view.mainscreen.MainScreen
 import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
 import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
+import com.example.momentum_app.view.profilescreen.ProfileScreen
 import com.example.momentum_app.view.profilescreen.ProfileScreenPostPreview
 import com.example.momentum_app.view.sharingtask.SharePostScreen
 import com.example.momentum_app.view.sharingtask.ShareStoryScreen
@@ -118,6 +119,16 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        composable("ProfileScreen"){
+                            ProfileScreen(
+                                modifier = Modifier,
+                                context = this@MainActivity,
+                                postViewModel = postViewModel,
+                                navController = navController,
+                                userViewModel = signUpViewModel
+                            )
+                        }
+
                         composable(
                             "ShareStoryScreen/{imageUri}/{taskTitle}/{taskDesc}/{taskId}"
                         ) { backStackEntry ->
@@ -137,7 +148,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable("StoryFullScreen") {
-                            StoryFullScreen(storyViewModel)
+                            StoryFullScreen(storyViewModel, context = this@MainActivity, navController)
                         }
 
                         composable(
@@ -172,7 +183,10 @@ class MainActivity : ComponentActivity() {
 
                             ProfileScreenPostPreview(
                                 modifier = Modifier,
-                                post = post
+                                post = post,
+                                postviewmodel = postViewModel,
+                                context = this@MainActivity,
+                                navController = navController
                             )
                         }
                     }

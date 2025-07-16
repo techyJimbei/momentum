@@ -5,25 +5,17 @@ import com.example.momentum_app.model.Coins
 import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.Story
 import com.example.momentum_app.model.Task
-import com.example.momentum_app.model.TokenAccept
 import com.example.momentum_app.model.UserLogin
 import com.example.momentum_app.model.UserRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
-import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import java.util.Objects
 
 interface UserApi {
-
-    interface ApiService {
-
-    }
-
 
     @POST("/api/auth/login")
     suspend fun loginUser(@Body user: UserLogin): Response<Void>
@@ -52,12 +44,18 @@ interface UserApi {
     @GET("/api/posts")
     suspend fun getAllPosts(): Response<List<Post>>
 
+    @DELETE("/api/delete/{id}")
+    suspend fun deletePost(@Path("id") postId: Int): Response<Void>
+
     @GET("/api/auth/coins/{username}")
-    suspend fun getCoins(@Path("username") username: String) : Response<Coins>
+    suspend fun getCoins(@Path("username") username: String): Response<Coins>
 
     @POST("/stories/post")
-    suspend fun postStory(@Body story: Story) : Response<Story>
+    suspend fun postStory(@Body story: Story): Response<Story>
 
     @GET("/stories/active")
     suspend fun getStories(): Response<List<Story>>
+
+    @DELETE("/stories/{id}")
+    suspend fun deleteStory(@Path("id") storyId: Long): Response<Void>
 }
