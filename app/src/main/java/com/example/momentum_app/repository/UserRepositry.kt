@@ -9,7 +9,7 @@ import com.example.momentum_app.model.VerifyResponse
 import retrofit2.Response
 
 class UserRepository {
-    private val api = RetrofitInstance.api
+    private val api = RetrofitInstance.getApi()
 
 //    suspend fun signIn(username: String, password: String): Response<Void> {
 //       return api.loginUser(UserLogin(username, password))
@@ -17,14 +17,13 @@ class UserRepository {
 
     suspend fun signIn(username: String, password: String): Response<Map<String, String>> {
         return try {
-            RetrofitInstance.api.loginUser(UserLogin(username, password))
+            val api = RetrofitInstance.getApi()
+            api.loginUser(UserLogin(username, password))
         } catch (e: Exception) {
             e.printStackTrace()
             Response.error(500, okhttp3.ResponseBody.create(null, ""))
         }
     }
-
-
 
     suspend fun signUp(username: String, email: String, password: String): Response<Void> {
         return api.registerUser(UserRequest(username, email, password))

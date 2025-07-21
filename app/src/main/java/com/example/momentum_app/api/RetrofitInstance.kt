@@ -15,32 +15,29 @@ object RetrofitInstance {
         .setLenient()
         .create()
 
-    private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY
-    }
+    private lateinit var retrofit: Retrofit
+    private lateinit var userApi: UserApi
 
-    private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor)
-        .build()
+    fun init(context: Context) {
+        val tokenManager = TokenManager(context)
 
-    fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
-        return OkHttpClient.Builder()
+        val okHttpClient = OkHttpClient.Builder()
             .addInterceptor(AuthInterceptor(tokenManager))
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
             .build()
-    }
 
-    private val retrofit by lazy {
-        Retrofit.Builder()
+        retrofit = Retrofit.Builder()
             .baseUrl("http://192.168.10.207:8080/")
-            .client(client) // Use client with logging
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
+
+        userApi = retrofit.create(UserApi::class.java)
     }
 
-    val api: UserApi by lazy {
-        retrofit.create(UserApi::class.java)
+    fun getApi(): UserApi {
+        return userApi
     }
-
-
 }
-

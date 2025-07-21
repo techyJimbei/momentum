@@ -7,7 +7,7 @@ import com.example.momentum_app.view.tasklistscreen.getUsername
 import retrofit2.Response
 
 class StoryRespository {
-    private val api = RetrofitInstance.api
+    private val api = RetrofitInstance.getApi()
 
     suspend fun createStory(
         context: Context,

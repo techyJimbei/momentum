@@ -15,6 +15,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.momentum_app.api.RetrofitInstance
 import com.example.momentum_app.view.mainscreen.MainScreen
 import com.example.momentum_app.view.onboardinggetstarted.OnboardingGetStarted
 import com.example.momentum_app.view.onboardingscreen.OnboardingScreen
@@ -34,6 +35,8 @@ import com.example.momentum_app.viewmodel.TaskListViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        RetrofitInstance.init(applicationContext)
+
 
         val signUpViewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
         val taskListViewModel = ViewModelProvider(this)[TaskListViewModel::class.java]

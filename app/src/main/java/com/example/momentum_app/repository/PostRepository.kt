@@ -6,7 +6,7 @@ import com.example.momentum_app.model.Post
 import retrofit2.Response
 
 class PostRepository {
-    private val api = RetrofitInstance.api
+    private val api = RetrofitInstance.getApi()
 
     private fun getUsername(context: Context): String {
         val sharedPref = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
