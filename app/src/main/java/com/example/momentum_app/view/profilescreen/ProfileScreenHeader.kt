@@ -36,3 +36,10 @@ fun ProfileScreenHeader(
                 })
     }
 }
+
+@Composable
+fun SettingDialog(
+
+){
+
+}

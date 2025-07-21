@@ -85,6 +85,8 @@ dependencies {
     implementation(libs.androidx.compiler)
     implementation(libs.firebase.appdistribution.gradle)
     implementation(libs.androidx.navigation.runtime.android)
+    implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.androidx.browser)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

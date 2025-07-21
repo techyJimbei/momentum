@@ -11,6 +11,13 @@ data class UserLogin(
     val password: String
 )
 
-data class TokenAccept(
-    val token: String
+data class VerifyResponse(
+    val valid: Boolean,
+    val username: String?
 )
+
+data class LoginResponse(
+    val token: String,
+    val username: String
+)
+

@@ -16,29 +16,40 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.momentum_app.MainActivity
 import com.example.momentum_app.R
+import com.example.momentum_app.viewmodel.SignUpViewModel
 import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(navController: NavHostController, context: MainActivity){
-
-    LaunchedEffect(key1 = true) {
-        delay(5000)
-        navController.popBackStack()
-        navController.navigate("OnboardingGetStarted")
-
-    }
-
-    Box(modifier = Modifier.fillMaxSize().background(color = Color(0xFF89C4FF))){
-
-        Image(painter =
-            painterResource(id = R.drawable.momentum_logo_resized),
+fun SplashScreen(
+    navController: NavHostController,
+    context: Context,
+    viewModel: SignUpViewModel
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color(0xFF89C4FF))
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.momentum_logo_resized),
             contentDescription = null,
             modifier = Modifier
                 .size(640.dp)
                 .align(alignment = Alignment.Center)
         )
     }
+
+    LaunchedEffect(Unit) {
+        delay(2000)
+
+        viewModel.verifyTokenOnAppStart(context) { isValid, username ->
+            navController.popBackStack()
+            if (isValid) {
+                navController.navigate("MainScreen")
+            } else {
+                navController.navigate("OnboardingGetStarted")
+            }
+        }
+    }
 }
-
-
 

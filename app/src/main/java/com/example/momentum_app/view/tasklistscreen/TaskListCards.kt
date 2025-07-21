@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.example.momentum_app.model.Task
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.compose.ui.text.style.TextDecoration
 
 @Composable
 fun TaskCard(
@@ -35,17 +36,31 @@ fun TaskCard(
             Checkbox(
                 checked = isChecked,
                 onCheckedChange = {
-                    isChecked = it
-                    if (it) onComplete()
-                }
+                    if (!isChecked) {
+                        isChecked = it
+                        if (it) onComplete()
+                    }
+                },
+                enabled = !isChecked
             )
 
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = task.title, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = task.title,
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
+                    )
+                )
                 if (task.description.isNotEmpty()) {
-                    Text(text = task.description, style = MaterialTheme.typography.bodyMedium)
+                    Text(
+                        text = task.description,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            textDecoration = if (isChecked) TextDecoration.LineThrough else TextDecoration.None
+                        )
+                    )
                 }
             }
+
 
             Text(
                 text = "Created: ${formatTimestamp(task.createdAt)}",
@@ -54,11 +69,11 @@ fun TaskCard(
                 modifier = Modifier.padding(top = 4.dp)
             )
 
-            IconButton(onClick = { onEdit(task) }) {
+            IconButton(onClick = { if (!isChecked) onEdit(task) }, enabled = !isChecked) {
                 Icon(Icons.Default.Edit, contentDescription = "Edit")
             }
 
-            IconButton(onClick = onDelete) {
+            IconButton(onClick = { if (!isChecked) onDelete() }, enabled = !isChecked) {
                 Icon(Icons.Default.Delete, contentDescription = "Delete")
             }
         }

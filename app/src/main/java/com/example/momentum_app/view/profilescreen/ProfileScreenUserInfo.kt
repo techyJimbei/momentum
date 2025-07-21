@@ -35,7 +35,7 @@ import com.example.momentum_app.viewmodel.SignUpViewModel
 
 @Composable
 fun ProfileScreenUserInfo(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     context: Context,
     postViewModel: PostViewModel,
     navController: NavController,
@@ -114,14 +114,7 @@ fun ProfileScreenUserInfo(
                 Box(
                     modifier = modifier.clickable {
                         postViewModel.selectPost(post)
-                        navController.navigate(
-                            "ProfileScreenPostPreview/" +
-                                    "${Uri.encode(post.username)}/" +
-                                    "${Uri.encode(post.caption)}/" +
-                                    "${Uri.encode(post.image)}/" +
-                                    "${Uri.encode(post.taskTitle)}/" +
-                                    "${Uri.encode(post.taskDescription)}"
-                        )
+                        navController.navigate("ProfileScreenPostPreview")
                     }
                 ) {
                     PostGridItem(post.image)

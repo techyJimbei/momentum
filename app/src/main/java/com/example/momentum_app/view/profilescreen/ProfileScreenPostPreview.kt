@@ -1,6 +1,7 @@
 package com.example.momentum_app.view.profilescreen
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,6 +23,7 @@ import androidx.compose.material.AlertDialog
 import androidx.compose.material.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.momentum_app.R
 import com.example.momentum_app.model.Post
 import com.example.momentum_app.ui.theme.Dark
@@ -45,37 +48,31 @@ import com.example.momentum_app.viewmodel.PostViewModel
 
 @Composable
 fun ProfileScreenPostPreview(
-    modifier: Modifier = Modifier,
-    post: Post?,
+    modifier: Modifier,
     postviewmodel: PostViewModel,
     context: Context,
     navController: NavController
 ) {
+    val post = postviewmodel.selectedPost.collectAsState().value
+
     if (post != null) {
-        LazyColumn(
+        PostsRow(
+            post = post,
+            context = context,
+            postviewmodel = postviewmodel,
+            navController = navController,
             modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 40.dp)
-        ) {
-            item {
-                PostsRow(
-                    post = post,
-                    modifier = modifier,
-                    postviewmodel = postviewmodel,
-                    context = context,
-                    navController = navController
-                )
-            }
-        }
+        )
     } else {
-        Text("No post selected.")
+        Text("No post selected")
     }
+
 }
 
 
 @Composable
 fun PostsRow(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     post: Post,
     postviewmodel: PostViewModel,
     context: Context,
@@ -83,6 +80,8 @@ fun PostsRow(
 ) {
     val pager = rememberPagerState(initialPage = 0) { 1 }
     var showpostDeleteDialog by remember { mutableStateOf(false) }
+
+
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -162,17 +161,19 @@ fun PostsRow(
             onDeletePost = {
                 val postId = post.id
                 if (postId != null) {
-                    postviewmodel.deletePost(postId, onResult = {success, _ ->
+                    postviewmodel.deletePost(postId) { success, message ->
                         if (success) {
                             Toast.makeText(context, "Post Deleted", Toast.LENGTH_SHORT).show()
-                            navController.popBackStack()
-                        }
-                        else {
+                            navController.navigate("ProfileScreen") {
+                                popUpTo("ProfileScreenPostPreview") { inclusive = true }
+                                launchSingleTop = true
+                            }
+
+                        } else {
                             Toast.makeText(context, "Deletion failed", Toast.LENGTH_SHORT).show()
                         }
-                    })
+                    }
                 }
-
             }
         )
     }

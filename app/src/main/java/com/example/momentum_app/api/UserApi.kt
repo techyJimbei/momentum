@@ -2,11 +2,13 @@ package com.example.momentum_app.api
 
 
 import com.example.momentum_app.model.Coins
+import com.example.momentum_app.model.LoginResponse
 import com.example.momentum_app.model.Post
 import com.example.momentum_app.model.Story
 import com.example.momentum_app.model.Task
 import com.example.momentum_app.model.UserLogin
 import com.example.momentum_app.model.UserRequest
+import com.example.momentum_app.model.VerifyResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -18,10 +20,13 @@ import retrofit2.http.Path
 interface UserApi {
 
     @POST("/api/auth/login")
-    suspend fun loginUser(@Body user: UserLogin): Response<Void>
+    suspend fun loginUser(@Body user: UserLogin): Response<Map<String, String>>
 
     @POST("/api/auth/save")
     suspend fun registerUser(@Body user: UserRequest): Response<Void>
+
+    @POST("/api/auth/verify")
+    suspend fun verify(@Body payload: Map<String, String>): Response<VerifyResponse>
 
     @POST("/api/task")
     suspend fun addTask(@Body task: Task): Response<Task>

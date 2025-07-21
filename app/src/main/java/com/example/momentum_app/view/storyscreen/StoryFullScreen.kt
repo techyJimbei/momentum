@@ -18,8 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -38,12 +36,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import coil.compose.AsyncImagePainter.State.Empty.painter
 import com.example.momentum_app.R
 import com.example.momentum_app.viewmodel.StoryViewModel
 
 @Composable
-fun StoryFullScreen(storyViewModel: StoryViewModel, context: Context, navController: NavController) {
+fun StoryFullScreen(
+    storyViewModel: StoryViewModel,
+    context: Context,
+    navController: NavController
+) {
     val story = storyViewModel.selectedStory.collectAsState().value
     var showDeleteDialog by remember { mutableStateOf(false) }
 

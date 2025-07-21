@@ -1,6 +1,8 @@
 package com.example.momentum_app.api
 
 import android.content.Context
+import com.example.momentum_app.jwttoken.AuthInterceptor
+import com.example.momentum_app.jwttoken.TokenManager
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,18 +15,23 @@ object RetrofitInstance {
         .setLenient()
         .create()
 
-    // Logging interceptor
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
-        level = HttpLoggingInterceptor.Level.BODY // Log full request/response bodies
+        level = HttpLoggingInterceptor.Level.BODY
     }
 
     private val client = OkHttpClient.Builder()
-        .addInterceptor(loggingInterceptor) // Add the logging interceptor
+        .addInterceptor(loggingInterceptor)
         .build()
+
+    fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(AuthInterceptor(tokenManager))
+            .build()
+    }
 
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl("http://192.168.115.207:8080/")
+            .baseUrl("http://192.168.10.207:8080/")
             .client(client) // Use client with logging
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
@@ -34,11 +41,6 @@ object RetrofitInstance {
         retrofit.create(UserApi::class.java)
     }
 
-    fun provideRetrofit(context: Context): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080")
-            .client(client) // Reuse the same logging-enabled client
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-    }
+
 }
+
